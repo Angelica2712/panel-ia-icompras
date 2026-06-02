@@ -16,20 +16,20 @@
         }
 
         :root {
-            --bg-deep:      #040d1a;
-            --bg-dark:      #071428;
-            --bg-card:      rgba(10, 25, 55, 0.85);
-            --border:       rgba(56, 120, 220, 0.25);
-            --border-focus: rgba(56, 140, 255, 0.7);
-            --blue-primary: #1a6ef7;
-            --blue-light:   #3b8aff;
-            --blue-glow:    rgba(26, 110, 247, 0.35);
-            --text-primary: #e8f0ff;
-            --text-muted:   #6b8cbe;
-            --text-label:   #94b3d8;
-            --error:        #ff4e6a;
-            --error-bg:     rgba(255, 78, 106, 0.1);
-            --success:      #00d4a0;
+            --bg-deep:      #0d2244;
+            --bg-dark:      #102a54;
+            --bg-card:      rgba(16, 42, 90, 0.82);
+            --border:       rgba(80, 148, 255, 0.25);
+            --border-focus: rgba(90, 160, 255, 0.75);
+            --blue-primary: #2478ff;
+            --blue-light:   #5aa0ff;
+            --blue-glow:    rgba(36, 120, 255, 0.4);
+            --text-primary: #eef4ff;
+            --text-muted:   #7fa4cc;
+            --text-label:   #a4bfdd;
+            --error:        #ff6080;
+            --error-bg:     rgba(255, 96, 128, 0.1);
+            --success:      #00e6b0;
         }
 
         html, body {
@@ -60,17 +60,18 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(26, 110, 247, 0.18) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0, 212, 160, 0.08) 0%, transparent 60%),
-                linear-gradient(180deg, #040d1a 0%, #071428 100%);
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(36, 120, 255, 0.26) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0, 230, 176, 0.13) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 60% 40%, rgba(90, 160, 255, 0.10) 0%, transparent 50%),
+                linear-gradient(180deg, #0d2244 0%, #102a54 100%);
         }
 
         .grid-lines {
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(56, 120, 220, 0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 120, 220, 0.06) 1px, transparent 1px);
+                linear-gradient(rgba(80, 148, 255, 0.09) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(80, 148, 255, 0.09) 1px, transparent 1px);
             background-size: 50px 50px;
             mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
         }
@@ -84,21 +85,21 @@
 
         .orb-1 {
             width: 500px; height: 500px;
-            background: rgba(26, 110, 247, 0.12);
+            background: rgba(36, 120, 255, 0.18);
             top: -150px; left: -100px;
             animation-delay: 0s;
         }
 
         .orb-2 {
             width: 350px; height: 350px;
-            background: rgba(0, 212, 160, 0.07);
+            background: rgba(0, 230, 176, 0.11);
             bottom: -100px; right: -80px;
             animation-delay: -4s;
         }
 
         .orb-3 {
             width: 250px; height: 250px;
-            background: rgba(100, 160, 255, 0.08);
+            background: rgba(120, 180, 255, 0.13);
             top: 40%; right: 15%;
             animation-delay: -2s;
         }
@@ -141,16 +142,16 @@
 
         /* Card glassmorphism */
         .login-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: rgba(14, 38, 85, 0.80);
+            border: 1px solid rgba(90, 160, 255, 0.28);
             border-radius: 20px;
             padding: 48px 44px;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             box-shadow:
-                0 0 0 1px rgba(56, 120, 220, 0.1),
-                0 32px 80px rgba(4, 13, 26, 0.7),
-                0 0 60px rgba(26, 110, 247, 0.06);
+                0 0 0 1px rgba(90, 160, 255, 0.12),
+                0 32px 80px rgba(8, 20, 55, 0.55),
+                0 0 80px rgba(36, 120, 255, 0.10);
             animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -279,7 +280,7 @@
         .form-input {
             width: 100%;
             padding: 13px 14px 13px 42px;
-            background: rgba(7, 20, 40, 0.6);
+            background: rgba(12, 32, 72, 0.65);
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text-primary);
@@ -291,13 +292,13 @@
         }
 
         .form-input::placeholder {
-            color: rgba(107, 140, 190, 0.5);
+            color: rgba(127, 164, 204, 0.55);
         }
 
         .form-input:focus {
             border-color: var(--border-focus);
-            background: rgba(10, 28, 60, 0.8);
-            box-shadow: 0 0 0 3px rgba(56, 140, 255, 0.12);
+            background: rgba(16, 42, 92, 0.85);
+            box-shadow: 0 0 0 3px rgba(90, 160, 255, 0.14);
         }
 
         .form-input:focus + .input-icon,
@@ -363,7 +364,7 @@
             width: 18px; height: 18px;
             appearance: none;
             -webkit-appearance: none;
-            background: rgba(7, 20, 40, 0.6);
+            background: rgba(12, 32, 72, 0.65);
             border: 1px solid var(--border);
             border-radius: 5px;
             cursor: pointer;
@@ -401,7 +402,7 @@
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--blue-primary) 0%, #0a3db5 100%);
+            background: linear-gradient(135deg, #2478ff 0%, #1258d4 100%);
             border: none;
             border-radius: 10px;
             color: white;
@@ -413,7 +414,7 @@
             position: relative;
             overflow: hidden;
             letter-spacing: 0.3px;
-            box-shadow: 0 8px 32px var(--blue-glow);
+            box-shadow: 0 8px 32px rgba(36, 120, 255, 0.45);
         }
 
         .btn-login::before {
@@ -427,7 +428,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(26, 110, 247, 0.5);
+            box-shadow: 0 14px 44px rgba(36, 120, 255, 0.55);
         }
 
         .btn-login:hover::before {

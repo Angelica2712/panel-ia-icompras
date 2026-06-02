@@ -444,7 +444,107 @@
             .kpi-grid   { grid-template-columns: 1fr; }
             .kpi-grid-3 { grid-template-columns: 1fr; }
         }
+
+        /* ══════════════════════════════════════
+           PAGINACIÓN LARAVEL
+        ══════════════════════════════════════ */
+        nav[aria-label="Pagination Navigation"],
+        .pagination-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        /* Texto "Showing X to Y of Z results" */
+        nav[aria-label="Pagination Navigation"] > p,
+        .pagination-wrapper p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Contenedor de botones */
+        nav[aria-label="Pagination Navigation"] > div:last-child,
+        .pagination-wrapper > div:last-child {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+        }
+
+        /* Todos los spans/links de paginación */
+        nav[aria-label="Pagination Navigation"] span,
+        nav[aria-label="Pagination Navigation"] a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        /* Página activa */
+        nav[aria-label="Pagination Navigation"] span[aria-current="page"] > span {
+            background: rgba(36, 120, 255, 0.2);
+            border-color: rgba(36, 120, 255, 0.4);
+            color: var(--blue-2);
+            min-width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Links de páginas */
+        nav[aria-label="Pagination Navigation"] a {
+            background: rgba(18, 45, 95, 0.5);
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+
+        nav[aria-label="Pagination Navigation"] a:hover {
+            background: rgba(36, 120, 255, 0.15);
+            border-color: rgba(36, 120, 255, 0.35);
+            color: var(--text-primary);
+        }
+
+        /* Span desactivado (Previous/Next cuando no aplica) */
+        nav[aria-label="Pagination Navigation"] span:not([aria-current]) {
+            background: rgba(18, 45, 95, 0.25);
+            border-color: var(--border);
+            color: rgba(127, 164, 204, 0.35);
+            cursor: not-allowed;
+        }
+
+        /* SVG íconos de anterior/siguiente — tamaño controlado */
+        nav[aria-label="Pagination Navigation"] svg {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+        }
+
+        /* "..." puntos suspensivos */
+        nav[aria-label="Pagination Navigation"] span[aria-disabled] {
+            background: transparent;
+            border-color: transparent;
+            color: var(--text-muted);
+        }
     </style>
+
 </head>
 <body>
 
@@ -465,7 +565,7 @@
     <nav class="sidebar-nav">
         <span class="nav-section-label">Principal</span>
         <a class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}" id="nav-dashboard">
-            <span class="nav-icon">📊</span> Dashboard
+            <span class="nav-icon">📊</span> Inicio
         </a>
         <span class="nav-section-label">Análisis</span>
         <a class="nav-item {{ request()->routeIs('conversaciones') ? 'active' : '' }}" href="{{ route('conversaciones') }}" id="nav-conversaciones">

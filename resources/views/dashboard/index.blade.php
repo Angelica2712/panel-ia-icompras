@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dashboard IA iCompras360 — Estadísticas en tiempo real">
-    <title> IA — iCompras360</title>
+    <meta name="description" content="Panel IA iCompras360 — Estadísticas en tiempo real del asistente IA">
+    <title>Inicio — Panel IA iCompras360</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -742,7 +742,7 @@
         <nav class="sidebar-nav">
             <span class="nav-section-label">Principal</span>
             <a class="nav-item active" href="{{ route('dashboard') }}">
-                <span class="nav-icon">📊</span> Dashboard
+                <span class="nav-icon">📊</span> Inicio
             </a>
 
             <span class="nav-section-label">Análisis</span>
@@ -770,7 +770,7 @@
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="btn-logout">🚪 Cerrar sesión</button>
+                <button type="submit" class="btn-logout"> Cerrar sesión</button>
             </form>
         </div>
     </aside>
