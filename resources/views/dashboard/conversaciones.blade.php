@@ -2,7 +2,7 @@
 
 @section('title', 'Conversaciones')
 @section('page-title', 'Conversaciones')
-@section('page-subtitle', 'Historial completo de interacciones con el asistente IA')
+@section('page-subtitle', 'Historial completo de interacciones del asistente')
 
 @section('content')
 
@@ -23,9 +23,9 @@
         <div class="kpi-sub">Caracteres por pregunta</div>
     </div>
     <div class="kpi-card purple">
-        <div class="kpi-header"><span class="kpi-label">Long. Promedio Respuesta</span><i class="bi bi-robot kpi-icon"></i></div>
+        <div class="kpi-header"><span class="kpi-label">Long. Promedio Respuesta</span><i class="bi bi-text-paragraph kpi-icon"></i></div>
         <div class="kpi-value" style="font-size:22px;">{{ number_format($avgRespuesta) }}<small style="font-size:12px"> chars</small></div>
-        <div class="kpi-sub">Caracteres por respuesta IA</div>
+        <div class="kpi-sub">Caracteres por respuesta</div>
     </div>
 </div>
 
@@ -43,7 +43,7 @@
                     <th>Usuario</th>
                     <th>Farmacia</th>
                     <th>Pregunta</th>
-                    <th>Respuesta IA</th>
+                    <th>Respuesta</th>
                     <th>Latencia</th>
                     <th>Versión</th>
                 </tr>

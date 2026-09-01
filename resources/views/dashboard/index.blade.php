@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Panel IA iCompras360 — Estadísticas del asistente IA">
-    <title>Inicio — Panel IA iCompras360</title>
+    <meta name="description" content="Panel Administrativo iCompras360 — Estadísticas del asistente">
+    <title>Inicio — Panel iCompras360</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -429,6 +429,158 @@
             .kpi-grid { grid-template-columns: 1fr 1fr; }
             .topbar-left h1 { font-size: 13px; }
         }
+
+        /* ── Filtro de rango de fechas ────────────────────────────────── */
+        .date-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+        .date-filter-bar .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .date-filter-bar .filter-label i {
+            font-size: 15px;
+            color: var(--accent-light);
+        }
+        .date-filter-bar input[type="date"] {
+            background: rgba(11, 30, 61, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            min-width: 140px;
+        }
+        .date-filter-bar input[type="date"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .date-filter-bar input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.7) sepia(0.5) saturate(3) hue-rotate(190deg);
+            cursor: pointer;
+        }
+        .date-filter-sep {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .btn-filter:active {
+            transform: scale(0.97);
+        }
+        .btn-filter-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .btn-filter-primary:hover {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-filter-ghost {
+            background: rgba(239, 68, 68, 0.08);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+        }
+        .btn-filter-ghost:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .filter-quick-btns {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .btn-quick {
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-quick:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-light);
+            border-color: rgba(59, 130, 246, 0.25);
+        }
+
+        .filter-active-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--accent-light);
+            font-size: 11px;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .date-filter-bar {
+                padding: 10px 12px;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            .date-filter-bar input[type="date"] {
+                min-width: 0;
+                flex: 1;
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+            .filter-quick-btns {
+                margin-left: 0;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .btn-quick { font-size: 10px; padding: 4px 8px; }
+            .btn-filter { font-size: 11px; padding: 6px 12px; }
+        }
     </style>
 </head>
 <body>
@@ -440,9 +592,9 @@
     <aside class="sidebar" id="sidebar">
         <button class="sidebar-close" id="sidebarClose" aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
         <div class="sidebar-logo">
-            <img src="/panel-ia/public/images/mascota-ia.png" alt="IA">
+            <img src="/panel-ia/public/images/mascota-ia.png" alt="iCompras360">
             <div class="sidebar-logo-text">
-                <strong>Panel IA</strong>
+                <strong>Panel Administrativo</strong>
                 <span>iCompras360</span>
             </div>
         </div>
@@ -450,21 +602,21 @@
         <nav class="sidebar-nav">
             <span class="nav-section-label">Principal</span>
             <a class="nav-item active" href="{{ route('dashboard') }}">
-                <i class="bi bi-grid-1x2 nav-icon"></i> Inicio
+                <i class="bi bi-house-door nav-icon"></i> Inicio
             </a>
 
-            <span class="nav-section-label">Análisis</span>
+            <span class="nav-section-label">Módulos</span>
             <a class="nav-item" href="{{ route('conversaciones') }}">
-                <i class="bi bi-chat-left-text nav-icon"></i> Conversaciones
+                <i class="bi bi-chat-square-dots nav-icon"></i> Conversaciones
             </a>
             <a class="nav-item" href="{{ route('farmacias') }}">
-                <i class="bi bi-shop nav-icon"></i> Farmacias
+                <i class="bi bi-building nav-icon"></i> Farmacias
             </a>
             <a class="nav-item" href="{{ route('rendimiento') }}">
-                <i class="bi bi-speedometer2 nav-icon"></i> Rendimiento
+                <i class="bi bi-bar-chart-line nav-icon"></i> Rendimiento
             </a>
             <a class="nav-item" href="{{ route('usuarios') }}">
-                <i class="bi bi-people nav-icon"></i> Usuarios
+                <i class="bi bi-person-lines-fill nav-icon"></i> Usuarios
             </a>
         </nav>
 
@@ -491,7 +643,7 @@
                 <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><i class="bi bi-list"></i></button>
                 <div>
                     <h1>Resumen General</h1>
-                    <p>Estadísticas del asistente IA · iCompras360</p>
+                    <p>Estadísticas del asistente · iCompras360</p>
                 </div>
             </div>
             <div class="topbar-right">
@@ -504,6 +656,35 @@
         </div>
 
         <div class="content">
+
+            <!-- Filtro de rango de fechas -->
+            <form class="date-filter-bar" id="dateFilterForm" method="GET" action="{{ route('dashboard') }}">
+                <span class="filter-label">
+                    <i class="bi bi-calendar2-range"></i>
+                    Rango de Fechas
+                </span>
+                <input type="date" name="fecha_desde" id="fechaDesde" value="{{ $fechaDesde ?? '' }}" title="Fecha inicio">
+                <span class="date-filter-sep">—</span>
+                <input type="date" name="fecha_hasta" id="fechaHasta" value="{{ $fechaHasta ?? '' }}" title="Fecha fin">
+                <button type="submit" class="btn-filter btn-filter-primary">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+                @if($filtroActivo)
+                    <a href="{{ route('dashboard') }}" class="btn-filter btn-filter-ghost">
+                        <i class="bi bi-x-circle"></i> Limpiar
+                    </a>
+                    <span class="filter-active-tag">
+                        <i class="bi bi-check-circle"></i>
+                        {{ \Carbon\Carbon::parse($fechaDesde)->format('d/m/Y') }} — {{ \Carbon\Carbon::parse($fechaHasta)->format('d/m/Y') }}
+                    </span>
+                @endif
+                <div class="filter-quick-btns">
+                    <button type="button" class="btn-quick" data-range="today">Hoy</button>
+                    <button type="button" class="btn-quick" data-range="7days">7 días</button>
+                    <button type="button" class="btn-quick" data-range="30days">30 días</button>
+                    <button type="button" class="btn-quick" data-range="month">Este Mes</button>
+                </div>
+            </form>
 
             <!-- Indicadores principales: total de mensajes por periodo -->
             <div class="kpi-grid">
@@ -583,7 +764,7 @@
                         <canvas id="chartDia"></canvas>
                     </div>
                     <p class="chart-description">
-                        Esta gráfica muestra la cantidad de mensajes procesados por el asistente IA cada día durante el último mes.
+                        Esta gráfica muestra la cantidad de mensajes procesados por el asistente cada día durante el último mes.
                         Permite identificar picos de actividad y tendencias de uso a lo largo del tiempo.
                     </p>
                 </div>
@@ -612,7 +793,7 @@
                         @endforelse
                     </div>
                     <p class="chart-description">
-                        Ranking de farmacias según la cantidad total de consultas realizadas al asistente IA.
+                        Ranking de farmacias según la cantidad total de consultas realizadas al asistente.
                     </p>
                 </div>
             </div>
@@ -652,7 +833,7 @@
                 <div class="chart-card">
                     <div class="chart-card-header">
                         <div>
-                            <div class="chart-title"><i class="bi bi-activity"></i> Latencia IA</div>
+                            <div class="chart-title"><i class="bi bi-activity"></i> Latencia</div>
                             <div class="chart-subtitle">Últimos 14 días (milisegundos)</div>
                         </div>
                     </div>
@@ -660,7 +841,7 @@
                         <canvas id="chartLatencia"></canvas>
                     </div>
                     <p class="chart-description">
-                        Evolución del tiempo de respuesta del modelo IA. La línea verde indica el promedio y la roja punteada el máximo registrado por día.
+                        Evolución del tiempo de respuesta del modelo. La línea verde indica el promedio y la roja punteada el máximo registrado por día.
                     </p>
                 </div>
             </div>
@@ -911,6 +1092,56 @@
             }
         }
     });
+    </script>
+
+    <script>
+    // ── Quick-select buttons para el filtro de fechas ───────────────
+    (function () {
+        var form       = document.getElementById('dateFilterForm');
+        var inputDesde = document.getElementById('fechaDesde');
+        var inputHasta = document.getElementById('fechaHasta');
+
+        function toISO(date) {
+            var y = date.getFullYear();
+            var m = String(date.getMonth() + 1).padStart(2, '0');
+            var d = String(date.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + d;
+        }
+
+        document.querySelectorAll('.btn-quick').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var range = this.getAttribute('data-range');
+                var hoy   = new Date();
+                var desde, hasta;
+
+                switch (range) {
+                    case 'today':
+                        desde = hasta = toISO(hoy);
+                        break;
+                    case '7days':
+                        hasta = toISO(hoy);
+                        var d7 = new Date(hoy);
+                        d7.setDate(d7.getDate() - 6);
+                        desde = toISO(d7);
+                        break;
+                    case '30days':
+                        hasta = toISO(hoy);
+                        var d30 = new Date(hoy);
+                        d30.setDate(d30.getDate() - 29);
+                        desde = toISO(d30);
+                        break;
+                    case 'month':
+                        desde = toISO(new Date(hoy.getFullYear(), hoy.getMonth(), 1));
+                        hasta = toISO(hoy);
+                        break;
+                }
+
+                inputDesde.value = desde;
+                inputHasta.value = hasta;
+                form.submit();
+            });
+        });
+    })();
     </script>
 
     <script>

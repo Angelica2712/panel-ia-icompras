@@ -2,7 +2,7 @@
 
 @section('title', 'Usuarios')
 @section('page-title', 'Usuarios')
-@section('page-subtitle', 'Análisis de usuarios que interactúan con el asistente IA')
+@section('page-subtitle', 'Análisis de usuarios que interactúan con el asistente')
 
 @section('content')
 
@@ -70,7 +70,7 @@
             @endforelse
         </div>
         <p class="chart-description">
-            Los usuarios que más consultas han realizado al asistente IA en los últimos 7 días.
+            Los usuarios que más consultas han realizado al asistente en los últimos 7 días.
         </p>
     </div>
 </div>

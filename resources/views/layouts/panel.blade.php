@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') — Panel IA iCompras360</title>
+    <title>@yield('title') — Panel iCompras360</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -356,6 +356,132 @@
         .version-count { font-size: 12px; font-weight: 700; color: var(--text-primary); }
         .version-pct   { font-size: 10px; color: var(--text-muted); min-width: 35px; text-align: right; }
 
+        /* ── Filtro de rango de fechas ────────────────────────────────── */
+        .date-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+        .date-filter-bar .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .date-filter-bar .filter-label i {
+            font-size: 15px;
+            color: var(--accent-light);
+        }
+        .date-filter-bar input[type="date"] {
+            background: rgba(11, 30, 61, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            min-width: 140px;
+        }
+        .date-filter-bar input[type="date"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .date-filter-bar input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.7) sepia(0.5) saturate(3) hue-rotate(190deg);
+            cursor: pointer;
+        }
+        .date-filter-sep {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .btn-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .btn-filter:active { transform: scale(0.97); }
+        .btn-filter-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .btn-filter-primary:hover {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-filter-ghost {
+            background: rgba(239, 68, 68, 0.08);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+        }
+        .btn-filter-ghost:hover { background: rgba(239, 68, 68, 0.15); }
+        .filter-quick-btns {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .btn-quick {
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-quick:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-light);
+            border-color: rgba(59, 130, 246, 0.25);
+        }
+        .filter-active-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--accent-light);
+            font-size: 11px;
+            font-weight: 600;
+            animation: fadeInTag 0.3s ease;
+        }
+        @keyframes fadeInTag {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @yield('extra-styles')
 
         /* responsive tablet */
@@ -441,6 +567,25 @@
             .sidebar-logo { padding: 16px 12px; }
             .sidebar-nav { padding: 10px 8px; }
             .sidebar-footer { padding: 10px 8px; }
+
+            .date-filter-bar {
+                padding: 10px 12px;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            .date-filter-bar input[type="date"] {
+                min-width: 0;
+                flex: 1;
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+            .filter-quick-btns {
+                margin-left: 0;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .btn-quick { font-size: 10px; padding: 4px 8px; }
+            .btn-filter { font-size: 11px; padding: 6px 12px; }
         }
 
         /* movil xs */
@@ -549,9 +694,9 @@
     <button class="sidebar-close" id="sidebarClose" aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
 
     <div class="sidebar-logo">
-        <img src="/panel-ia/public/images/mascota-ia.png" alt="IA">
+        <img src="/panel-ia/public/images/mascota-ia.png" alt="iCompras360">
         <div class="sidebar-logo-text">
-            <strong>Panel IA</strong>
+            <strong>Panel Administrativo</strong>
             <span>iCompras360</span>
         </div>
     </div>
@@ -559,20 +704,20 @@
     <nav class="sidebar-nav">
         <span class="nav-section-label">Principal</span>
         <a class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}" id="nav-dashboard">
-            <i class="bi bi-grid-1x2 nav-icon"></i> Inicio
+            <i class="bi bi-house-door nav-icon"></i> Inicio
         </a>
-        <span class="nav-section-label">Análisis</span>
+        <span class="nav-section-label">Módulos</span>
         <a class="nav-item {{ request()->routeIs('conversaciones') ? 'active' : '' }}" href="{{ route('conversaciones') }}" id="nav-conversaciones">
-            <i class="bi bi-chat-left-text nav-icon"></i> Conversaciones
+            <i class="bi bi-chat-square-dots nav-icon"></i> Conversaciones
         </a>
         <a class="nav-item {{ request()->routeIs('farmacias') ? 'active' : '' }}" href="{{ route('farmacias') }}" id="nav-farmacias">
-            <i class="bi bi-shop nav-icon"></i> Farmacias
+            <i class="bi bi-building nav-icon"></i> Farmacias
         </a>
         <a class="nav-item {{ request()->routeIs('rendimiento') ? 'active' : '' }}" href="{{ route('rendimiento') }}" id="nav-rendimiento">
-            <i class="bi bi-speedometer2 nav-icon"></i> Rendimiento
+            <i class="bi bi-bar-chart-line nav-icon"></i> Rendimiento
         </a>
         <a class="nav-item {{ request()->routeIs('usuarios') ? 'active' : '' }}" href="{{ route('usuarios') }}" id="nav-usuarios">
-            <i class="bi bi-people nav-icon"></i> Usuarios
+            <i class="bi bi-person-lines-fill nav-icon"></i> Usuarios
         </a>
     </nav>
 
@@ -606,6 +751,41 @@
         </div>
     </div>
     <div class="content">
+        <!-- Filtro de rango de fechas (global) -->
+        @php
+            $currentRoute = request()->route()->getName();
+            $fechaDesde = request('fecha_desde');
+            $fechaHasta = request('fecha_hasta');
+            $filtroActivo = $fechaDesde && $fechaHasta;
+        @endphp
+        <form class="date-filter-bar" id="dateFilterForm" method="GET" action="{{ route($currentRoute) }}">
+            <span class="filter-label">
+                <i class="bi bi-calendar2-range"></i>
+                Rango de Fechas
+            </span>
+            <input type="date" name="fecha_desde" id="fechaDesde" value="{{ $fechaDesde ?? '' }}" title="Fecha inicio">
+            <span class="date-filter-sep">—</span>
+            <input type="date" name="fecha_hasta" id="fechaHasta" value="{{ $fechaHasta ?? '' }}" title="Fecha fin">
+            <button type="submit" class="btn-filter btn-filter-primary">
+                <i class="bi bi-funnel"></i> Filtrar
+            </button>
+            @if($filtroActivo)
+                <a href="{{ route($currentRoute) }}" class="btn-filter btn-filter-ghost">
+                    <i class="bi bi-x-circle"></i> Limpiar
+                </a>
+                <span class="filter-active-tag">
+                    <i class="bi bi-check-circle"></i>
+                    {{ \Carbon\Carbon::parse($fechaDesde)->format('d/m/Y') }} — {{ \Carbon\Carbon::parse($fechaHasta)->format('d/m/Y') }}
+                </span>
+            @endif
+            <div class="filter-quick-btns">
+                <button type="button" class="btn-quick" data-range="today">Hoy</button>
+                <button type="button" class="btn-quick" data-range="7days">7 días</button>
+                <button type="button" class="btn-quick" data-range="30days">30 días</button>
+                <button type="button" class="btn-quick" data-range="month">Este Mes</button>
+            </div>
+        </form>
+
         @yield('content')
     </div>
 </main>
@@ -642,6 +822,57 @@
     sidebar.querySelectorAll('.nav-item').forEach(function (link) {
         link.addEventListener('click', function () {
             if (window.innerWidth < 1024) closeSidebar();
+        });
+    });
+})();
+</script>
+
+<script>
+// ── Quick-select buttons para el filtro de fechas ───────────────
+(function () {
+    var form       = document.getElementById('dateFilterForm');
+    var inputDesde = document.getElementById('fechaDesde');
+    var inputHasta = document.getElementById('fechaHasta');
+    if (!form) return;
+
+    function toISO(date) {
+        var y = date.getFullYear();
+        var m = String(date.getMonth() + 1).padStart(2, '0');
+        var d = String(date.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + d;
+    }
+
+    document.querySelectorAll('.btn-quick').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var range = this.getAttribute('data-range');
+            var hoy   = new Date();
+            var desde, hasta;
+
+            switch (range) {
+                case 'today':
+                    desde = hasta = toISO(hoy);
+                    break;
+                case '7days':
+                    hasta = toISO(hoy);
+                    var d7 = new Date(hoy);
+                    d7.setDate(d7.getDate() - 6);
+                    desde = toISO(d7);
+                    break;
+                case '30days':
+                    hasta = toISO(hoy);
+                    var d30 = new Date(hoy);
+                    d30.setDate(d30.getDate() - 29);
+                    desde = toISO(d30);
+                    break;
+                case 'month':
+                    desde = toISO(new Date(hoy.getFullYear(), hoy.getMonth(), 1));
+                    hasta = toISO(hoy);
+                    break;
+            }
+
+            inputDesde.value = desde;
+            inputHasta.value = hasta;
+            form.submit();
         });
     });
 })();

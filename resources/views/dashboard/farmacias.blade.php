@@ -36,7 +36,7 @@
             <canvas id="chartFarmacias"></canvas>
         </div>
         <p class="chart-description">
-            Comparación horizontal de las farmacias con mayor cantidad de consultas al asistente IA durante la última semana.
+            Comparación horizontal de las farmacias con mayor cantidad de consultas al asistente durante la última semana.
         </p>
     </div>
     <div class="chart-card" style="margin-bottom:0;">

@@ -2,7 +2,7 @@
 
 @section('title', 'Rendimiento')
 @section('page-title', 'Rendimiento')
-@section('page-subtitle', 'Análisis de latencia y velocidad de respuesta del asistente IA')
+@section('page-subtitle', 'Análisis de latencia y velocidad de respuesta del asistente')
 
 @section('content')
 

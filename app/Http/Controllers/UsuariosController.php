@@ -3,14 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\AiMensajeLog;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UsuariosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $fechaDesde = $request->input('fecha_desde');
+        $fechaHasta = $request->input('fecha_hasta');
+        $filtroActivo = $fechaDesde && $fechaHasta;
+
+        $aplicarFiltro = function ($query) use ($filtroActivo, $fechaDesde, $fechaHasta) {
+            if ($filtroActivo) {
+                $query->whereDate('created_at', '>=', $fechaDesde)
+                      ->whereDate('created_at', '<=', $fechaHasta);
+            }
+            return $query;
+        };
+
         // Top usuarios por volumen
-        $topUsuarios = AiMensajeLog::select(
+        $topUsuarios = $aplicarFiltro(AiMensajeLog::select(
                 'id_usuario',
                 DB::raw('COUNT(*) as total_mensajes'),
                 DB::raw('COUNT(DISTINCT session_id) as sesiones'),
@@ -18,37 +31,48 @@ class UsuariosController extends Controller
                 DB::raw('MAX(created_at) as ultima_actividad'),
                 DB::raw('MIN(created_at) as primera_actividad'),
                 DB::raw('COUNT(DISTINCT DATE(created_at)) as dias_activo')
-            )
+            ))
             ->groupBy('id_usuario')
             ->orderByDesc('total_mensajes')
-            ->paginate(20);
+            ->paginate(20)
+            ->appends($request->only(['fecha_desde', 'fecha_hasta']));
 
         // KPIs
-        $totalUsuarios    = AiMensajeLog::distinct('id_usuario')->count('id_usuario');
-        $usuariosHoy      = AiMensajeLog::whereDate('created_at', today())
+        $totalUsuarios    = $aplicarFiltro(AiMensajeLog::query())->distinct('id_usuario')->count('id_usuario');
+        $usuariosHoy      = $aplicarFiltro(AiMensajeLog::whereDate('created_at', today()))
                             ->distinct('id_usuario')->count('id_usuario');
-        $usuariosSemana   = AiMensajeLog::where('created_at', '>=', now()->startOfWeek())
+        $usuariosSemana   = $aplicarFiltro(AiMensajeLog::where('created_at', '>=', now()->startOfWeek()))
                             ->distinct('id_usuario')->count('id_usuario');
+        $totalMsgs        = $aplicarFiltro(AiMensajeLog::query())->count();
         $avgMsgPorUsuario = $totalUsuarios > 0
-                            ? round(AiMensajeLog::count() / $totalUsuarios, 1)
+                            ? round($totalMsgs / $totalUsuarios, 1)
                             : 0;
 
-        // Nuevos usuarios por día (últimos 30 días)
-        $nuevosPorDia = AiMensajeLog::select(
-                DB::raw('DATE(MIN(created_at)) as fecha'),
+        // Usuarios activos por día
+        $queryDia = AiMensajeLog::select(
+                DB::raw('DATE(created_at) as fecha'),
                 DB::raw('COUNT(DISTINCT id_usuario) as nuevos')
-            )
-            ->where('created_at', '>=', now()->subDays(30))
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy('fecha')
-            ->get();
+            );
+        if ($filtroActivo) {
+            $queryDia->whereDate('created_at', '>=', $fechaDesde)
+                     ->whereDate('created_at', '<=', $fechaHasta);
+        } else {
+            $queryDia->where('created_at', '>=', now()->subDays(30));
+        }
+        $nuevosPorDia = $queryDia->groupBy('fecha')->orderBy('fecha')->get();
 
-        // Usuarios más activos esta semana
-        $activosEstaSemana = AiMensajeLog::select(
+        // Usuarios más activos (en el rango o esta semana)
+        $queryActivos = AiMensajeLog::select(
                 'id_usuario',
                 DB::raw('COUNT(*) as total')
-            )
-            ->where('created_at', '>=', now()->startOfWeek())
+            );
+        if ($filtroActivo) {
+            $queryActivos->whereDate('created_at', '>=', $fechaDesde)
+                         ->whereDate('created_at', '<=', $fechaHasta);
+        } else {
+            $queryActivos->where('created_at', '>=', now()->startOfWeek());
+        }
+        $activosEstaSemana = $queryActivos
             ->groupBy('id_usuario')
             ->orderByDesc('total')
             ->limit(5)
