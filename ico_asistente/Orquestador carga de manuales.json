@@ -1,0 +1,123 @@
+{
+  "name": "Orquestador carga de manuales",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-orq",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = [{\"ruta\": \"/home/n8n/manuales/caracteristicas.pdf\", \"modulo\": \"caracteristicas\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/caracteristicas.pdf\", \"modulo\": \"caracteristicas\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/carrito.pdf\", \"modulo\": \"carrito\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/carrito.pdf\", \"modulo\": \"carrito\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/catalogo.pdf\", \"modulo\": \"catalogo\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/catalogo.pdf\", \"modulo\": \"catalogo\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/configuracion.pdf\", \"modulo\": \"configuracion\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/configuracion.pdf\", \"modulo\": \"configuracion\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/facturas.pdf\", \"modulo\": \"facturas\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/facturas.pdf\", \"modulo\": \"facturas\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/grafico de proveedor panel principal.pdf\", \"modulo\": \"panel_principal_grafico_proveedor\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/grafico de proveedor panel principal.pdf\", \"modulo\": \"panel_principal_grafico_proveedor\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/Grafico panel principal.pdf\", \"modulo\": \"panel_principal_graficos\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/Grafico panel principal.pdf\", \"modulo\": \"panel_principal_graficos\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/indicadores de catalogo.pdf\", \"modulo\": \"catalogo_indicadores\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/indicadores de catalogo.pdf\", \"modulo\": \"catalogo_indicadores\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/informacion.pdf\", \"modulo\": \"informacion\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/informacion.pdf\", \"modulo\": \"informacion\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/LOG DE TRANSACCIONES.pdf\", \"modulo\": \"log_transacciones\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/LOG DE TRANSACCIONES.pdf\", \"modulo\": \"log_transacciones\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/LOS 100 MAS COMPRADOS EN ICOMPRAS360.pdf\", \"modulo\": \"100_mas_comprados\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/LOS 100 MAS COMPRADOS EN ICOMPRAS360.pdf\", \"modulo\": \"100_mas_comprados\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/MARCAS CON MAYOR MOVIMIENTO EN ICOMPRAS360.pdf\", \"modulo\": \"marcas_mayor_movimiento\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/MARCAS CON MAYOR MOVIMIENTO EN ICOMPRAS360.pdf\", \"modulo\": \"marcas_mayor_movimiento\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/mayor_variedad_productos.pdf\", \"modulo\": \"mayor_variedad_productos\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/mayor_variedad_productos.pdf\", \"modulo\": \"mayor_variedad_productos\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/mejor_inventario_productos.pdf\", \"modulo\": \"mejor_inventario_productos\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/mejor_inventario_productos.pdf\", \"modulo\": \"mejor_inventario_productos\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/monto_por_proveedor.pdf\", \"modulo\": \"monto_por_proveedor\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/monto_por_proveedor.pdf\", \"modulo\": \"monto_por_proveedor\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/monto_ultimos30dias.pdf\", \"modulo\": \"monto_ultimos_30dias\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/monto_ultimos30dias.pdf\", \"modulo\": \"monto_ultimos_30dias\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/pedido.pdf\", \"modulo\": \"pedido\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/pedido.pdf\", \"modulo\": \"pedido\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/proveedores.pdf\", \"modulo\": \"proveedores\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/proveedores.pdf\", \"modulo\": \"proveedores\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/REPORTE DE DESVIO DE PEDIDOS.pdf\", \"modulo\": \"desvio_pedidos\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/REPORTE DE DESVIO DE PEDIDOS.pdf\", \"modulo\": \"desvio_pedidos\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/soporte.pdf\", \"modulo\": \"soporte\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/soporte.pdf\", \"modulo\": \"soporte\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/transito.pdf\", \"modulo\": \"transito\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/transito.pdf\", \"modulo\": \"transito\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/valor_del_inventario.pdf\", \"modulo\": \"valor_del_inventario\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/valor_del_inventario.pdf\", \"modulo\": \"valor_del_inventario\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/veces_en_1er_lugardocx.pdf\", \"modulo\": \"veces_en_1er_lugar\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/veces_en_1er_lugardocx.pdf\", \"modulo\": \"veces_en_1er_lugar\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/VER ULTIMOS 12 MESES.pdf\", \"modulo\": \"ver_ultimos_12_meses\", \"version\": \"light\"}, {\"ruta\": \"/home/n8n/manuales/VER ULTIMOS 12 MESES.pdf\", \"modulo\": \"ver_ultimos_12_meses\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/CATEGORIZACION DE PRODUCTOS EN INVENTARIO E ICOMPRAS360.pdf\", \"modulo\": \"categorizacion_productos_inventario\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/panel inferior.pdf\", \"modulo\": \"panel_inferior\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/panel superior.pdf\", \"modulo\": \"panel_superior\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/PRODUCTOS MAS COMPRADOS POR TU FARMACIA.pdf\", \"modulo\": \"productos_mas_comprados_farmacia\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/Reporte de ANALISIS DE PRESUPUESTO.pdf\", \"modulo\": \"analisis_presupuesto\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/REPORTE DE CATEGORIZACION DE PRODUCTOS.pdf\", \"modulo\": \"categorizacion_productos\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/REPORTE DE PRODUCTOS SIN MOVIMIENTO.pdf\", \"modulo\": \"productos_sin_movimiento\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/Reporte de Revalorización del Inventario.pdf\", \"modulo\": \"revalorizacion_inventario\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/REPORTE DE SOBRESTOCK.pdf\", \"modulo\": \"sobrestock\", \"version\": \"full\"}, {\"ruta\": \"/home/n8n/manuales/REPORTES DE ANALISIS DE COSTOS.pdf\", \"modulo\": \"analisis_costos\", \"version\": \"full\"}];\nreturn rows.map(r => ({ json: r }));"
+      },
+      "id": "code-orq",
+      "name": "Generar lista de manuales",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "loop-orq",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ruta": "={{ $json.ruta }}",
+            "modulo": "={{ $json.modulo }}",
+            "version": "={{ $json.version }}"
+          }
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "exec-orq",
+      "name": "Ejecutar Cargador",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        -100
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "Generar lista de manuales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar lista de manuales": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Ejecutar Cargador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ejecutar Cargador": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,366 @@
+{
+  "name": "Cargador de un manual",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\"ruta\": \"/home/n8n/manuales/soporte.pdf\", \"modulo\": \"soporte\", \"version\": \"light\"}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        1456
+      ],
+      "id": "37754cc9-dc5a-4499-9a15-77f34535b0d5",
+      "name": "Recibe parametros"
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.ruta }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        1456
+      ],
+      "id": "3fdcfea0-d2d6-4834-b5ab-c5498975aaf6",
+      "name": "Leer manual local"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "es-markdown",
+              "leftValue": "={{ $json.ruta }}",
+              "rightValue": ".md",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        1456
+      ],
+      "id": "8a1e0d3b-6b0a-4a1a-9a2e-1a6d0e2f7c11",
+      "name": "Es Markdown?"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "mode": "list",
+          "value": "icompras_modulos"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        1328
+      ],
+      "id": "f08dfe44-fc9a-42d2-b5fe-c193d36e6789",
+      "name": "Qdrant Vector Store PDF",
+      "credentials": {
+        "qdrantApi": {
+          "id": "Mew94CM3qNVkEQhM",
+          "name": "Qdrant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "mode": "list",
+          "value": "icompras_modulos"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        1584
+      ],
+      "id": "b3f2c1d4-7e5a-4b6c-9d8e-2f1a3b4c5d6e",
+      "name": "Qdrant Vector Store Markdown",
+      "credentials": {
+        "qdrantApi": {
+          "id": "Mew94CM3qNVkEQhM",
+          "name": "Qdrant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        1856
+      ],
+      "id": "6ee7f546-7f6e-4061-8e10-9fb349422fbc",
+      "name": "Embeddings HuggingFace Inference",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "ZaAezre8merZWbp8",
+          "name": "Hugging Face account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "pdfLoader",
+        "textSplittingMode": "custom",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "modulo",
+                "value": "={{ $json.modulo }}"
+              },
+              {
+                "name": "version",
+                "value": "={{ $json.version }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        1200
+      ],
+      "id": "3968d8a3-806d-4881-89a0-2154a9c43a3e",
+      "name": "Default Data Loader PDF"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "textLoader",
+        "textSplittingMode": "custom",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "modulo",
+                "value": "={{ $json.modulo }}"
+              },
+              {
+                "name": "version",
+                "value": "={{ $json.version }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        1712
+      ],
+      "id": "c4d5e6f7-8a9b-4c1d-9e2f-3a4b5c6d7e8f",
+      "name": "Default Data Loader Markdown"
+    },
+    {
+      "parameters": {
+        "chunkSize": 1200,
+        "chunkOverlap": 150,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        1984
+      ],
+      "id": "0f81dcbe-9c48-4661-8783-0d6b911b1a0e",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:6333/collections/icompras_modulos/points/payload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ payload: { modulo: $('Recibe parametros').item.json.modulo, version: $('Recibe parametros').item.json.version }, filter: { must: [ { is_empty: { key: 'modulo' } } ] } }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1728,
+        1456
+      ],
+      "id": "36b26917-13a5-42ed-8c1b-a68ce227434c",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wuovyQLgAyMPoz32",
+          "name": "Qdrant Header Auth"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Recibe parametros": {
+      "main": [
+        [
+          {
+            "node": "Leer manual local",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer manual local": {
+      "main": [
+        [
+          {
+            "node": "Es Markdown?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Markdown?": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Qdrant Vector Store PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store PDF",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Qdrant Vector Store Markdown",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader PDF": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store PDF",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader Markdown": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store Markdown",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader PDF",
+            "type": "ai_textSplitter",
+            "index": 0
+          },
+          {
+            "node": "Default Data Loader Markdown",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store PDF": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store Markdown": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f727d03a-ebbb-4a39-87e6-3ec09ca8fa8f",
+  "meta": {
+    "instanceId": "68201f9e2ee853e4ad5c82fc72c91de6596694968ea2dbc96e463dcc10d56810"
+  },
+  "nodeGroups": [],
+  "id": "iihdZLeiaADXWpEa",
+  "tags": []
+}
