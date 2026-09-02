@@ -38,9 +38,9 @@ class ManualesTest extends TestCase
         $md = UploadedFile::fake()->createWithContent('manual-catalogo.md', "# Catalogo\n\nComo buscar productos.");
 
         $this->actingAs($this->usuario())
-            ->post('/manuales', ['archivo' => $md, 'version' => 'light', 'modulo' => 'catalogo'])
+            ->post('/manuales', ['archivos' => [$md], 'version' => 'light', 'modulo' => 'catalogo'])
             ->assertRedirect('/manuales')
-            ->assertSessionHas('ok');
+            ->assertSessionHas('resultados');
 
         Http::assertSentCount(1);
 
@@ -69,9 +69,9 @@ class ManualesTest extends TestCase
         $md = UploadedFile::fake()->createWithContent('carrito.md', '# Carrito');
 
         $this->actingAs($this->usuario())
-            ->post('/manuales', ['archivo' => $md, 'version' => 'ambas', 'modulo' => 'carrito'])
+            ->post('/manuales', ['archivos' => [$md], 'version' => 'ambas', 'modulo' => 'carrito'])
             ->assertRedirect('/manuales')
-            ->assertSessionHas('ok');
+            ->assertSessionHas('resultados');
 
         Http::assertSentCount(2);
         Http::assertSent(fn ($r) => $r->data()['version'] === 'light');
@@ -96,12 +96,17 @@ class ManualesTest extends TestCase
 
         $md = UploadedFile::fake()->createWithContent('pedido.md', '# Pedido');
 
-        $respuesta = $this->actingAs($this->usuario())
-            ->post('/manuales', ['archivo' => $md, 'version' => 'ambas', 'modulo' => 'pedido']);
+        $this->actingAs($this->usuario())
+            ->post('/manuales', ['archivos' => [$md], 'version' => 'ambas', 'modulo' => 'pedido'])
+            ->assertSessionHas('resultados');
 
-        $respuesta->assertSessionHas('error');
-        $this->assertStringContainsString('light', session('error'));
-        $this->assertStringContainsString('duplicada', session('error'));
+        $r = session('resultados')[0];
+
+        // El resumen deja ver que "light" SI entro aunque el archivo fallara:
+        // sin ese detalle, un reintento a ciegas duplicaria esa version.
+        $this->assertFalse($r['ok']);
+        $this->assertSame(['light'], $r['versiones']);
+        $this->assertStringContainsString('full', $r['detalle']);
     }
 
     public function test_rechaza_archivo_que_no_es_md(): void
@@ -111,27 +116,48 @@ class ManualesTest extends TestCase
 
         $this->actingAs($this->usuario())
             ->post('/manuales', [
-                'archivo' => UploadedFile::fake()->createWithContent('manual.txt', 'hola'),
+                'archivos' => [UploadedFile::fake()->createWithContent('manual.txt', 'hola')],
                 'version' => 'light',
                 'modulo'  => 'carrito',
             ])
-            ->assertSessionHasErrors('archivo');
+            ->assertSessionHasErrors('archivos.0');
 
         Http::assertNothingSent();
     }
 
-    public function test_rechaza_version_invalida_y_modulo_vacio(): void
+    public function test_rechaza_version_invalida(): void
     {
         config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
         Http::fake();
 
         $this->actingAs($this->usuario())
             ->post('/manuales', [
-                'archivo' => UploadedFile::fake()->createWithContent('m.md', 'hola'),
-                'version' => 'premium',
-                'modulo'  => '',
+                'archivos' => [UploadedFile::fake()->createWithContent('m.md', 'hola')],
+                'version'  => 'premium',
+                'modulo'   => 'catalogo',
             ])
-            ->assertSessionHasErrors(['version', 'modulo']);
+            ->assertSessionHasErrors('version');
+
+        Http::assertNothingSent();
+    }
+
+    /**
+     * Con UN archivo el modulo es obligatorio. Podria deducirse del nombre,
+     * pero es el caso normal y conviene que se escriba: un nombre de archivo
+     * descuidado crearia un modulo nuevo en Qdrant sin que nadie lo note.
+     */
+    public function test_un_solo_archivo_exige_modulo(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+        Http::fake();
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', [
+                'archivos' => [UploadedFile::fake()->createWithContent('m.md', 'hola')],
+                'version'  => 'light',
+                'modulo'   => '',
+            ])
+            ->assertSessionHasErrors('modulo');
 
         Http::assertNothingSent();
     }
@@ -143,7 +169,7 @@ class ManualesTest extends TestCase
 
         $this->actingAs($this->usuario())
             ->post('/manuales', [
-                'archivo' => UploadedFile::fake()->createWithContent('m.md', 'hola'),
+                'archivos' => [UploadedFile::fake()->createWithContent('m.md', 'hola')],
                 'version' => 'full',
                 'modulo'  => 'pedidos',
             ])
@@ -159,11 +185,13 @@ class ManualesTest extends TestCase
 
         $this->actingAs($this->usuario())
             ->post('/manuales', [
-                'archivo' => UploadedFile::fake()->createWithContent('m.md', 'hola'),
-                'version' => 'full',
-                'modulo'  => 'pedidos',
+                'archivos' => [UploadedFile::fake()->createWithContent('m.md', 'hola')],
+                'version'  => 'full',
+                'modulo'   => 'pedidos',
             ])
-            ->assertSessionHas('error');
+            ->assertSessionHas('resultados');
+
+        $this->assertFalse(session('resultados')[0]['ok']);
     }
 
     public function test_rechaza_archivo_vacio(): void
@@ -173,11 +201,141 @@ class ManualesTest extends TestCase
 
         $this->actingAs($this->usuario())
             ->post('/manuales', [
-                'archivo' => UploadedFile::fake()->createWithContent('vacio.md', "   \n  "),
+                'archivos' => [UploadedFile::fake()->createWithContent('vacio.md', "   \n  ")],
                 'version' => 'light',
                 'modulo'  => 'catalogo',
             ])
-            ->assertSessionHas('error');
+            ->assertSessionHas('resultados');
+
+        $r = session('resultados')[0];
+        $this->assertFalse($r['ok']);
+        $this->assertStringContainsString('vac', $r['detalle']);
+
+        Http::assertNothingSent();
+    }
+
+    // ---------------------------------------------------------------------
+    // Carga masiva
+    // ---------------------------------------------------------------------
+
+    /**
+     * Con varios archivos no hay forma de escribir un modulo por cada uno,
+     * asi que sale del nombre del archivo, normalizado.
+     */
+    public function test_carga_masiva_toma_el_modulo_del_nombre_del_archivo(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+        Http::fake(['*' => Http::response(['ok' => true], 200)]);
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', [
+                'archivos' => [
+                    UploadedFile::fake()->createWithContent('Grafico panel principal.md', '# Grafico'),
+                    UploadedFile::fake()->createWithContent('REPORTE DE SOBRESTOCK.md', '# Sobrestock'),
+                    UploadedFile::fake()->createWithContent('configuracion.md', '# Config'),
+                ],
+                'version' => 'light',
+            ])
+            ->assertSessionHas('resultados');
+
+        $modulos = array_column(session('resultados'), 'modulo');
+
+        $this->assertSame(
+            ['grafico_panel_principal', 'reporte_de_sobrestock', 'configuracion'],
+            $modulos
+        );
+
+        Http::assertSentCount(3);
+    }
+
+    /**
+     * En carga masiva NO se pide modulo: se ignora si viene.
+     */
+    public function test_carga_masiva_no_exige_modulo(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+        Http::fake(['*' => Http::response(['ok' => true], 200)]);
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', [
+                'archivos' => [
+                    UploadedFile::fake()->createWithContent('carrito.md', '# Carrito'),
+                    UploadedFile::fake()->createWithContent('catalogo.md', '# Catalogo'),
+                ],
+                'version' => 'ambas',
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('resultados');
+
+        // 2 archivos x 2 versiones = 4 peticiones
+        Http::assertSentCount(4);
+    }
+
+    /**
+     * Si un archivo del lote falla, los demas deben cargarse igual.
+     * Abortar todo por uno seria peor: en un lote de quince manuales,
+     * dejaria catorce sin cargar sin razon.
+     */
+    public function test_carga_masiva_sigue_aunque_un_archivo_falle(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+
+        Http::fakeSequence()
+            ->push(['ok' => true], 200)   // carrito -> bien
+            ->push('boom', 500)           // catalogo -> falla
+            ->push(['ok' => true], 200);  // pedido -> bien
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', [
+                'archivos' => [
+                    UploadedFile::fake()->createWithContent('carrito.md', '# Carrito'),
+                    UploadedFile::fake()->createWithContent('catalogo.md', '# Catalogo'),
+                    UploadedFile::fake()->createWithContent('pedido.md', '# Pedido'),
+                ],
+                'version' => 'light',
+            ])
+            ->assertSessionHas('resultados');
+
+        $res = session('resultados');
+
+        $this->assertCount(3, $res);
+        $this->assertTrue($res[0]['ok'], 'carrito deberia haber entrado');
+        $this->assertFalse($res[1]['ok'], 'catalogo deberia haber fallado');
+        $this->assertTrue($res[2]['ok'], 'pedido deberia haber entrado pese al fallo anterior');
+    }
+
+    public function test_carga_masiva_rechaza_un_archivo_que_no_es_md(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+        Http::fake();
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', [
+                'archivos' => [
+                    UploadedFile::fake()->createWithContent('bueno.md', '# Bueno'),
+                    UploadedFile::fake()->createWithContent('malo.txt', 'texto'),
+                ],
+                'version' => 'light',
+            ])
+            ->assertSessionHasErrors('archivos.1');
+
+        // Ni siquiera el archivo valido se envia: la validacion corta antes.
+        Http::assertNothingSent();
+    }
+
+    public function test_carga_masiva_limita_la_cantidad_de_archivos(): void
+    {
+        config(['n8n.manuales.webhook_url' => 'https://n8n.example.test/webhook/manuales']);
+        Http::fake();
+
+        $muchos = [];
+        for ($i = 0; $i < 21; $i++) {
+            $muchos[] = UploadedFile::fake()->createWithContent("m{$i}.md", '# Manual');
+        }
+
+        $this->actingAs($this->usuario())
+            ->post('/manuales', ['archivos' => $muchos, 'version' => 'light'])
+            ->assertSessionHasErrors('archivos');
 
         Http::assertNothingSent();
     }

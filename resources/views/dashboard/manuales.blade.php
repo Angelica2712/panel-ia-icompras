@@ -178,6 +178,11 @@
     }
     .tabla-vacia i { display: block; font-size: 22px; margin-bottom: 8px; opacity: 0.5; }
 
+    .alerta-mixta { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.32); color: #fcd34d; }
+
+    .estado-ok  { color: var(--green); font-size: 12px; white-space: nowrap; }
+    .estado-mal { color: #fca5a5; font-size: 12px; }
+
     .resumen-total {
         border-top: 1px solid var(--border);
         color: var(--text-muted);
@@ -194,16 +199,66 @@
 @if(session('ok'))
     <div class="alerta alerta-ok">
         <i class="bi bi-check-circle-fill"></i>
-        <div>
-            {{ session('ok') }}
-            @if(session('resumen'))
-                <div class="resumen-envio">
-                    <span>Archivo: <strong>{{ session('resumen')['archivo'] }}</strong></span>
-                    <span>Módulo: <strong>{{ session('resumen')['modulo'] }}</strong></span>
-                    <span>Versión: <strong>{{ session('resumen')['version'] }}</strong></span>
-                    <span>Tamaño: <strong>{{ session('resumen')['kb'] }} KB</strong></span>
-                </div>
-            @endif
+        <div>{{ session('ok') }}</div>
+    </div>
+@endif
+
+{{-- ===================== Resumen de la carga ===================== --}}
+{{-- Una fila por archivo. En carga masiva es la única forma de saber
+     cuáles entraron y cuáles no: un solo mensaje global no sirve. --}}
+@if(session('resultados'))
+    @php
+        $res      = session('resultados');
+        $okCount  = collect($res)->where('ok', true)->count();
+        $malCount = count($res) - $okCount;
+    @endphp
+    <div class="alerta {{ $malCount === 0 ? 'alerta-ok' : ($okCount === 0 ? 'alerta-error' : 'alerta-mixta') }}">
+        <i class="bi {{ $malCount === 0 ? 'bi-check-circle-fill' : ($okCount === 0 ? 'bi-x-circle-fill' : 'bi-exclamation-circle-fill') }}"></i>
+        <div style="width:100%;">
+            <strong>
+                @if($malCount === 0)
+                    {{ $okCount }} {{ $okCount === 1 ? 'manual cargado' : 'manuales cargados' }} correctamente.
+                @elseif($okCount === 0)
+                    No se pudo cargar {{ $malCount === 1 ? 'el manual' : 'ningún manual' }}.
+                @else
+                    {{ $okCount }} de {{ count($res) }} manuales cargados. Revisa los que fallaron.
+                @endif
+            </strong>
+
+            <div class="tabla-wrap" style="margin-top:10px;">
+                <table class="tabla-manuales" style="min-width:460px;">
+                    <thead>
+                        <tr>
+                            <th>Archivo</th>
+                            <th>Módulo</th>
+                            <th>Versiones</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($res as $r)
+                            <tr>
+                                <td>{{ $r['archivo'] }}</td>
+                                <td class="celda-modulo">{{ $r['modulo'] }}</td>
+                                <td>
+                                    @forelse($r['versiones'] as $v)
+                                        <span class="tag-version {{ $v === 'light' ? 'tag-light' : 'tag-full' }}">{{ $v }}</span>
+                                    @empty
+                                        <span class="celda-frags">—</span>
+                                    @endforelse
+                                </td>
+                                <td>
+                                    @if($r['ok'])
+                                        <span class="estado-ok"><i class="bi bi-check-lg"></i> {{ $r['kb'] }} KB</span>
+                                    @else
+                                        <span class="estado-mal"><i class="bi bi-x-lg"></i> {{ $r['detalle'] }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endif
@@ -218,8 +273,8 @@
 <div class="chart-card" style="margin-bottom:0;">
     <div class="chart-card-header">
         <div>
-            <div class="chart-title"><i class="bi bi-file-earmark-arrow-up"></i> Subir manual</div>
-            <div class="chart-subtitle">Archivo Markdown (.md) — máximo {{ $maxKb / 1024 }} MB</div>
+            <div class="chart-title"><i class="bi bi-file-earmark-arrow-up"></i> Subir manuales</div>
+            <div class="chart-subtitle">Markdown (.md) — hasta {{ $maxArchivos }} archivos, {{ $maxKb / 1024 }} MB cada uno</div>
         </div>
     </div>
 
@@ -235,24 +290,46 @@
           id="formManual">
         @csrf
 
-        {{-- ---------- Campo 1: archivo .md ---------- --}}
+        {{-- ---------- Campo 1: uno o varios .md ---------- --}}
+        {{-- El atributo "multiple" y el nombre terminado en [] son lo que
+             convierte esto en carga masiva: Laravel recibe un array. --}}
         <div class="campo">
-            <label for="archivo">
-                <i class="bi bi-filetype-md"></i> Archivo del manual
+            <label for="archivos">
+                <i class="bi bi-filetype-md"></i> Archivos del manual
             </label>
             <input type="file"
-                   name="archivo"
-                   id="archivo"
+                   name="archivos[]"
+                   id="archivos"
                    accept=".md,text/markdown"
-                   class="{{ $errors->has('archivo') ? 'con-error' : '' }}"
+                   multiple
+                   class="{{ $errors->has('archivos') || $errors->has('archivos.*') ? 'con-error' : '' }}"
                    required>
             <span class="ayuda">
-                Solo archivos con extensión <strong>.md</strong>. El contenido se lee como
-                texto y se envía a n8n; el archivo no se guarda en el servidor.
+                Puedes seleccionar <strong>varios a la vez</strong> con Ctrl (o Cmd en Mac).
+                Solo archivos <strong>.md</strong>; el contenido se lee como texto y se envía
+                a n8n, sin guardarse en el servidor.
             </span>
-            @error('archivo')
+            @error('archivos')
                 <span class="error-msg"><i class="bi bi-x-circle"></i> {{ $message }}</span>
             @enderror
+            @error('archivos.*')
+                <span class="error-msg"><i class="bi bi-x-circle"></i> {{ $message }}</span>
+            @enderror
+        </div>
+
+        {{-- Vista previa: qué se va a cargar y con qué módulo.
+             Se rellena por JavaScript al elegir los archivos. --}}
+        <div class="campo" id="previaWrap" style="display:none;">
+            <label><i class="bi bi-list-check"></i> Se van a cargar</label>
+            <div class="tabla-wrap">
+                <table class="tabla-manuales" id="tablaPrevia" style="min-width:420px;">
+                    <thead>
+                        <tr><th>Archivo</th><th>Módulo</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <span class="ayuda" id="previaNota"></span>
         </div>
 
         <div class="fila-2col">
@@ -289,7 +366,8 @@
                 <label for="modulo">
                     <i class="bi bi-grid-3x3-gap"></i> Módulo
                 </label>
-                {{-- Campo de escritura libre: se escribe el módulo a mano. --}}
+                {{-- Escritura libre. Con varios archivos se deshabilita por
+                     JavaScript, porque cada uno toma su módulo del nombre. --}}
                 <input type="text"
                        name="modulo"
                        id="modulo"
@@ -297,9 +375,8 @@
                        placeholder="Ej: catalogo"
                        maxlength="60"
                        autocomplete="off"
-                       class="{{ $errors->has('modulo') ? 'con-error' : '' }}"
-                       required>
-                <span class="ayuda">
+                       class="{{ $errors->has('modulo') ? 'con-error' : '' }}">
+                <span class="ayuda" id="ayudaModulo">
                     Escribe el nombre del módulo. Si vas a actualizar uno que ya existe,
                     cópialo tal cual aparece en la tabla de abajo: <strong>catalogo</strong> y
                     <strong>Catálogo</strong> se guardan como dos módulos distintos.
@@ -444,6 +521,90 @@
             boton.style.cursor = 'not-allowed';
             aviso.style.display = 'inline-flex';
         }, 10);
+    });
+})();
+
+// Vista previa de la carga: al elegir archivos, muestra qué se va a subir
+// y con qué módulo. Con varios archivos el módulo sale del nombre del
+// archivo, así que el campo de texto se deshabilita para no confundir.
+//
+// Esta función replica moduloDesdeNombre() del controlador. Si cambias una,
+// cambia la otra: aquí es solo una previsualización, el valor que cuenta
+// siempre lo calcula el servidor.
+(function () {
+    const input      = document.getElementById('archivos');
+    const modulo     = document.getElementById('modulo');
+    const ayuda      = document.getElementById('ayudaModulo');
+    const previaWrap = document.getElementById('previaWrap');
+    const tabla      = document.querySelector('#tablaPrevia tbody');
+    const nota       = document.getElementById('previaNota');
+
+    if (!input) return;
+
+    const ayudaOriginal = ayuda.innerHTML;
+
+    function moduloDesdeNombre(nombre) {
+        return nombre
+            .replace(/\.[^.]+$/, '')                      // quita la extensión
+            .normalize('NFD').replace(/[̀-ͯ]/g, '')  // quita acentos
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '_')                  // símbolos -> guion bajo
+            .replace(/^_+|_+$/g, '')
+            .slice(0, 60) || 'sin_nombre';
+    }
+
+    input.addEventListener('change', function () {
+        const archivos = Array.from(input.files || []);
+        tabla.innerHTML = '';
+
+        if (archivos.length === 0) {
+            previaWrap.style.display = 'none';
+            modulo.disabled = false;
+            modulo.required = true;
+            ayuda.innerHTML = ayudaOriginal;
+            return;
+        }
+
+        const masivo = archivos.length > 1;
+
+        archivos.forEach(function (f) {
+            const fila = document.createElement('tr');
+            const celdaArchivo = document.createElement('td');
+            const celdaModulo  = document.createElement('td');
+
+            celdaArchivo.textContent = f.name;
+            celdaModulo.className = 'celda-modulo';
+            celdaModulo.textContent = masivo ? moduloDesdeNombre(f.name) : (modulo.value || '—');
+
+            fila.appendChild(celdaArchivo);
+            fila.appendChild(celdaModulo);
+            tabla.appendChild(fila);
+        });
+
+        previaWrap.style.display = '';
+
+        if (masivo) {
+            modulo.disabled = true;
+            modulo.required = false;
+            modulo.value = '';
+            ayuda.innerHTML = 'Con varios archivos, el módulo de cada uno sale de su nombre. '
+                            + 'Si quieres otro nombre de módulo, renombra el archivo antes de subirlo.';
+            nota.textContent = archivos.length + ' archivos. Revisa que los módulos coincidan con los que ya existen '
+                             + 'abajo: un nombre distinto crea un módulo nuevo en vez de actualizar el existente.';
+        } else {
+            modulo.disabled = false;
+            modulo.required = true;
+            ayuda.innerHTML = ayudaOriginal;
+            nota.textContent = 'Se cargará con el módulo que escribas arriba.';
+        }
+    });
+
+    // Si escribe el módulo después de elegir el archivo, refrescamos la previa.
+    modulo.addEventListener('input', function () {
+        const celda = tabla.querySelector('td.celda-modulo');
+        if (celda && (input.files || []).length === 1) {
+            celda.textContent = modulo.value || '—';
+        }
     });
 })();
 

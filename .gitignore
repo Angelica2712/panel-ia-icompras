@@ -20,3 +20,10 @@ yarn-error.log
 /.idea
 /.vscode
 /panel-ia.zip
+*.zip
+
+# Credenciales de Ico_asistente (n8n/Qdrant/MySQL) - nunca trackear
+ico_asistente/confi_n8n.txt
+ico_asistente/confi_qdrant.txt
+ico_asistente/mysql_confi.txt
+ico_asistente/credenciales_prod.txt
