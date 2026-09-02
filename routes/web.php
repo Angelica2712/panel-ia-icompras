@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConversacionesController;
 use App\Http\Controllers\FarmaciasController;
+use App\Http\Controllers\ManualesController;
 use App\Http\Controllers\RendimientoController;
 use App\Http\Controllers\UsuariosController;
 
@@ -31,4 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/farmacias',        [FarmaciasController::class,    'index'])->name('farmacias');
     Route::get('/rendimiento',      [RendimientoController::class,  'index'])->name('rendimiento');
     Route::get('/usuarios',         [UsuariosController::class,     'index'])->name('usuarios');
+
+    // --- Carga de manuales a la base de conocimiento (n8n -> Qdrant) ---
+    // GET  muestra el formulario  ->  ruta con nombre "manuales.create"
+    // POST recibe el archivo      ->  ruta con nombre "manuales.store"
+    // Ambas usan la misma URL (/manuales); lo que las diferencia es el verbo HTTP.
+    Route::get('/manuales',     [ManualesController::class, 'create'])->name('manuales.create');
+    Route::post('/manuales',    [ManualesController::class, 'store'])->name('manuales.store');
+    // Borra de Qdrant todos los fragmentos de un modulo+version. Irreversible.
+    Route::delete('/manuales',  [ManualesController::class, 'destroy'])->name('manuales.destroy');
 });

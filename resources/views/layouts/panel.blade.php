@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') — Panel iCompras360</title>
+
+    {{-- Icono de la pestana del navegador.
+         asset() arma la URL a partir de la peticion actual, asi que funciona
+         igual servido por Apache (/panel-ia/public/...) que por artisan serve. --}}
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -719,6 +725,10 @@
         <a class="nav-item {{ request()->routeIs('usuarios') ? 'active' : '' }}" href="{{ route('usuarios') }}" id="nav-usuarios">
             <i class="bi bi-person-lines-fill nav-icon"></i> Usuarios
         </a>
+        <span class="nav-section-label">Conocimiento</span>
+        <a class="nav-item {{ request()->routeIs('manuales.*') ? 'active' : '' }}" href="{{ route('manuales.create') }}" id="nav-manuales">
+            <i class="bi bi-journal-arrow-up nav-icon"></i> Manuales
+        </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -758,6 +768,9 @@
             $fechaHasta = request('fecha_hasta');
             $filtroActivo = $fechaDesde && $fechaHasta;
         @endphp
+        {{-- El filtro de fechas solo aplica a las pantallas de métricas.
+             En "Manuales" (un formulario de carga) no tiene sentido, así que lo ocultamos. --}}
+        @unless(request()->routeIs('manuales.*'))
         <form class="date-filter-bar" id="dateFilterForm" method="GET" action="{{ route($currentRoute) }}">
             <span class="filter-label">
                 <i class="bi bi-calendar2-range"></i>
@@ -785,6 +798,7 @@
                 <button type="button" class="btn-quick" data-range="month">Este Mes</button>
             </div>
         </form>
+        @endunless
 
         @yield('content')
     </div>

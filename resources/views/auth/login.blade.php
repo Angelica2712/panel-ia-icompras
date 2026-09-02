@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Panel de administración - iCompras360">
     <title>Iniciar Sesión — iCompras360</title>
+
+    {{-- Icono de la pestana del navegador.
+         asset() arma la URL a partir de la peticion actual, asi que funciona
+         igual servido por Apache (/panel-ia/public/...) que por artisan serve. --}}
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
