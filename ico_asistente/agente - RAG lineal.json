@@ -1,0 +1,277 @@
+{
+  "name": "agente (RAG lineal, sin Agent)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4eae95d8-35e6-40d2-bc89-75f135fd8fca",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    name AS nombre_farmacia,\n    CASE\n        WHEN versionLight = 1 THEN 'Light'\n        WHEN versionLight = 0 THEN 'Full'\n        ELSE 'Desconocida'\n    END AS version_icompras\nFROM users \nWHERE codcli = '{{ $json.body.codcli }}'\nLIMIT 1;",
+        "options": {}
+      },
+      "id": "sql-1",
+      "name": "Execute a SQL query",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        220,
+        0
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "REPLACE_ME",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "=perfil_usuario",
+              "value": "=Farmacia: {{ $json.nombre_farmacia }} | Versión: {{ $json.version_icompras }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "=version_icompras",
+              "value": "={{ $json.version_icompras }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "edit-1",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "icompras_modulos",
+          "mode": "list",
+          "cachedResultName": "icompras_modulos"
+        },
+        "prompt": "={{ $('Webhook').item.json.body.chatInput }}",
+        "topK": 8,
+        "options": {
+          "searchFilterJson": "={{ { \"must\": [ { \"key\": \"version\", \"match\": { \"value\": $('Edit Fields').item.json.version_icompras.toLowerCase() } } ] } }}"
+        }
+      },
+      "id": "qdrant-1",
+      "name": "Buscar en Qdrant",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        0
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "REPLACE_ME",
+          "name": "Qdrant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "options": {}
+      },
+      "id": "emb-1",
+      "name": "Embeddings HuggingFace Inference",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        660,
+        220
+      ],
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "REPLACE_ME",
+          "name": "Hugging Face account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const docs = items.map(i => i.json.document ? i.json.document.pageContent : (i.json.pageContent || JSON.stringify(i.json)));\nconst contexto = docs.join('\n---\n');\nconst webhookData = $('Webhook').first().json.body;\nconst perfil = $('Edit Fields').first().json.perfil_usuario;\nreturn [{ json: { contexto, chatInput: webhookData.chatInput, session_id: webhookData.session_id, perfil_usuario: perfil } }];"
+      },
+      "id": "code-1",
+      "name": "Combinar contexto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres Ico, la asistente virtual oficial de iCompras360.\n\nEstás atendiendo a:\n{{ $json.perfil_usuario }}\n\nInformación relevante encontrada en los manuales del sistema:\n{{ $json.contexto }}\n\nPregunta del usuario:\n{{ $json.chatInput }}\n\nReglas: responde únicamente usando la información de los manuales de arriba. Si no hay información relevante, dilo claramente en vez de inventar. Sé breve y claro.",
+        "options": {}
+      },
+      "id": "chain-1",
+      "name": "DeepSeek Responder",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1100,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "deepseek-1",
+      "name": "DeepSeek Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        220
+      ],
+      "credentials": {
+        "deepSeekApi": {
+          "id": "REPLACE_ME",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.text }}",
+        "options": {}
+      },
+      "id": "respond-1",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Buscar en Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Buscar en Qdrant",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar en Qdrant": {
+      "main": [
+        [
+          {
+            "node": "Combinar contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combinar contexto": {
+      "main": [
+        [
+          {
+            "node": "DeepSeek Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "DeepSeek Responder",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Responder": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

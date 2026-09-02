@@ -19,7 +19,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/panel-ia.zip
 *.zip
 
 # Credenciales de Ico_asistente (n8n/Qdrant/MySQL) - nunca trackear
