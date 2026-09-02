@@ -8,7 +8,8 @@
 
     {{-- Icono de la pestana del navegador.
          asset() arma la URL a partir de la peticion actual, asi que funciona
-         igual servido por Apache (/panel-ia/public/...) que por artisan serve. --}}
+         igual servido por Apache en un subdirectorio que por artisan serve.
+         Si el sitio se sirve desde otro host/CDN, definir ASSET_URL en el .env. --}}
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -354,7 +355,7 @@
             <!-- Header -->
             <div class="login-header">
                 <div class="logo-container">
-                    <img src="/panel-ia/public/images/mascota-ia.png" alt="iCompras360" class="logo-img">
+                    <img src="{{ asset('images/mascota-ia.png') }}" alt="iCompras360" class="logo-img">
                 </div>
                 <h1 class="login-title">Panel Administrativo</h1>
                 <p class="login-subtitle">iCompras360 — Acceso al sistema</p>
