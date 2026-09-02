@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > FACTURAS
 
 Lista las facturas que has emitido a tus clientes (farmacias) a través de

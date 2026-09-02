@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE INVENTARIO > SUGERIDOS (Pedidos Sugeridos)
 
 Este módulo analiza tu inventario y te sugiere qué productos y en qué cantidad

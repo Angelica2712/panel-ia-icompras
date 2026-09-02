@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 MEJOR INVENTARIO PRODUCTOS
 
 este gráfico de barras tiene como objetivo mostrar el volumen físico de

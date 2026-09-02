@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 VER ULTIMOS 12 MESES
 
 Este gráfico de barras tiene un objetivo muy claro: mostrar el Retorno de

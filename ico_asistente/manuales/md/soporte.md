@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE SOPORTE (de carácter informativo)
 
 Opción para comunicarte con soporte técnico. Al abrir esta opción se despliega

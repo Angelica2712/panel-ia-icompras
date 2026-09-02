@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > CLIENTES
 
 Este módulo lista todas las farmacias que te compran (tus clientes dentro de la

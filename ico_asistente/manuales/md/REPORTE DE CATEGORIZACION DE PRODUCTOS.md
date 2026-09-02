@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 REPORTE DE CATEGORIZACION DE PRODUCTOS
 
 Este panel es el cerebro estratégico del inventario. Su objetivo es dividir y

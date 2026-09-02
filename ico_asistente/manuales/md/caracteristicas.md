@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
   OPCION DE CARACTERISTICAS (es de carácter colaborativo)
 
 Esta opción es de carácter colaborativo ya que usted como usuario ve que algún

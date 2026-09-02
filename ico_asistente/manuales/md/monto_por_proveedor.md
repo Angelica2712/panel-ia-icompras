@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 MONTO POR PROVEEDOR, ULTIMOS 30 DIAS
 
 Este gráfico de barras tiene como objetivo mostrar la distribución del dinero

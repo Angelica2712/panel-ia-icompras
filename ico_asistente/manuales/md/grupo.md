@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
 usuario que pregunta pertenece a una cuenta tipo "Grupo". A diferencia de otras
 funciones que se activan con un permiso, esto no es un simple interruptor: es

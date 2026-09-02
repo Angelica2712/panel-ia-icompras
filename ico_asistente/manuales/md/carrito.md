@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCIÓN DE CARRITO (donde vez todo tu pedido)
 
 En este modulo podrás ver todas las cantidades y todos los productos que

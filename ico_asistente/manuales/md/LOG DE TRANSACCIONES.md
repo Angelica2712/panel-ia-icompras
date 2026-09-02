@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 LOG DE TRANSACCIONES
 
 Este panel funciona como la "caja negra" de Icompras360. Su objetivo es registrar

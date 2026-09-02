@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE INVENTARIO (módulo principal)
 
 Este módulo solo aparece en el menú si el cliente no está en la versión "Light"

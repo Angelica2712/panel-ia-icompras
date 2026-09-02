@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 VECES EN 1ER LUGAR (RNK-1)
 
 Este gráfico es un indicador directo de competitividad económica. "RNK-1"

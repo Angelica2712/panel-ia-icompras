@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE INVENTARIO > COMPARADOR DE COMPETENCIA
 
 Este reporte compara tu precio de venta contra el precio promedio de la

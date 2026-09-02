@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > DA3
 
 NOTA PARA EL ASISTENTE (Ico): este módulo solo aparece en el menú si tienes

@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCIÓN DE CATALOGO (donde realizas tu pedido): en este módulo
 
 se muestra en catálogo de todos los productos de tus proveedores

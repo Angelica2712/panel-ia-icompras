@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
 usuario que pregunta tiene activado el "Módulo Miscelaneo" (bandera
 activarModuloMiscelaneo) y si no está en la versión Light. Si NO lo tiene: no

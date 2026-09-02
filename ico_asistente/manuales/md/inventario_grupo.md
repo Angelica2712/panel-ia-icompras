@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): al igual que en "grupo.md", verifica si el usuario
 que pregunta pertenece a una cuenta tipo Grupo antes de explicar este módulo
 en detalle. Si NO lo es, solo menciona que existe esta funcionalidad (comparar

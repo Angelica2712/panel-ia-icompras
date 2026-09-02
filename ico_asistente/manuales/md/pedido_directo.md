@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo en detalle,
 verifica si el usuario que está preguntando tiene la modalidad "Pedido Directo"
 activada en su cuenta (bandera userPedDirecto). Esta opción es excluyente con

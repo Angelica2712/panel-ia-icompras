@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 VERSION FULL
 
 Panel Principal (Inicio) Una vez dentro, verás la pantalla de inicio

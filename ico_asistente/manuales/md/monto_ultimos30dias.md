@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 REPORTE MONTO, ULTIMOS 30 DIAS
 
 Explica que este gráfico de área tiene como objetivo mostrar el volumen financiero

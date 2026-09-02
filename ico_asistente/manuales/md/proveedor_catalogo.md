@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > CATALOGO
 
 Aquí ves y gestionas los descuentos que ofreces sobre tu propio catálogo de

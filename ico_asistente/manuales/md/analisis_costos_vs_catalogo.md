@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE INVENTARIO > ANÁLISIS (Costos vs. Catálogo de proveedor)
 
 Este reporte cruza, producto por producto, tu inventario (costo, precio de venta

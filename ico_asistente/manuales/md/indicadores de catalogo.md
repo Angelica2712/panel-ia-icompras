@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 INDICADORES DEL CATALOGO DE VERSION FULL
 
 En la barra de búsqueda puedes buscar por descripción, principio activo, marca o

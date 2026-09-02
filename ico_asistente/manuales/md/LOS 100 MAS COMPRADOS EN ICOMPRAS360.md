@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 LOS 100 MAS COMPRADOS EN ICOMPRAS360
 
 Este panel es un indicador de rotación y demanda global en la plataforma. Su

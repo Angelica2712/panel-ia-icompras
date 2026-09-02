@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 REPORTE DE DESVIO DE PEDIDOS
 
 El objetivo de este reporte es identificar las ineficiencias en las compras. En

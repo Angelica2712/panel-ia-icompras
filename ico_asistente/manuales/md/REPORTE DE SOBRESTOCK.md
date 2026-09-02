@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 REPORTE DE SOBRESTOCK
 
 Este panel es una herramienta de salud financiera y logística. Su objetivo es

@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > OFERTAS
 
 Este módulo muestra el listado de productos de tu catálogo que tienen un

@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
 usuario que pregunta es administrador y tiene habilitado el permiso de
 moléculas (bandera botonMolecula). Si NO cumple ambas condiciones: no

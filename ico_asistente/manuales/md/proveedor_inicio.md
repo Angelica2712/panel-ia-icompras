@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > INICIO (Panel principal)
 
 Esta es la pantalla de bienvenida al entrar al portal de proveedores.

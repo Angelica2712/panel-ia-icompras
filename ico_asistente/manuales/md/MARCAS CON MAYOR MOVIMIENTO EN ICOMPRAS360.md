@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 MARCAS CON MAYOR MOVIMIENTO EN ICOMPRAS360
 
 Este gráfico de barras horizontales tiene como objetivo identificar cuáles son las

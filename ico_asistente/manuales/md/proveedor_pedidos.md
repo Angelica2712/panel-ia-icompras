@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > PEDIDOS
 
 Este manual es para usuarios tipo "P" (droguerías/proveedores) que ingresan al

@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 OPCION DE INFORMACION (de carácter informativo)
 
 Este módulo muestra información sobre de que es el Icompra se información de

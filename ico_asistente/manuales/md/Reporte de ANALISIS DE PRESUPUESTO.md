@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 Reporte de ANALISIS DE PRESUPUESTO
 
 Este panel, titulado "ANÁLISIS DE PRESUPUESTO", funciona como una

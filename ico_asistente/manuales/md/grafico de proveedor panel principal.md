@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 2. Módulo de Gráficos Estadísticos (Bloque Inferior)
 
 •  Gráfico Izquierdo: Pedidos últimos 7 días (BSS)

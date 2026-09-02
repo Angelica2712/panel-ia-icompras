@@ -1,3 +1,5 @@
+> **Audiencia: PROVEEDOR** — Este documento aplica únicamente a usuarios proveedores. No uses esta información para responder consultas de clientes/farmacias.
+
 PORTAL DE PROVEEDORES > CONFIGURACIÓN
 
 Este módulo solo es visible para usuarios administradores. Es la pantalla de

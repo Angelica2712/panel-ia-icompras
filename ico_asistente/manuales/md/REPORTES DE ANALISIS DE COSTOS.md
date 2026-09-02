@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 REPORTES DE ANALISIS DE COSTOS
 
 Este reporte es una herramienta de auditoría financiera y competitividad. Su

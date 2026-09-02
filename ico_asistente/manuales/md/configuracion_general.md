@@ -1,3 +1,5 @@
+> **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
+
 NOTA PARA EL ASISTENTE (Ico): esta pantalla es solo para usuarios
 administradores, y varias de sus pestañas tienen su propia condición de acceso
 (tipo de usuario o permiso habilitado), indicada en el título de cada una. Antes
