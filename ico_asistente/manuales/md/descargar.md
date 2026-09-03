@@ -15,7 +15,7 @@ contador de "(N) descargas".
 
 tienes el permiso habilitado). NOTA PARA EL ASISTENTE (Ico): si el
 usuario pregunta por la descarga de catálogo o RNK1 de proveedores y
-no tiene ese permiso (botonDescargaInvExcel) o no es cliente/grupo, no
+no tiene ese permiso o no es cliente/grupo, no
 expliques el paso a paso; solo menciona que existe esta funcionalidad y
 dile que debe solicitar a soporte que se la activen.
 

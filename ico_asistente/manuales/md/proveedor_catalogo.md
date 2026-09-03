@@ -18,8 +18,8 @@ verde) donde escribes un % y el sistema simula, sobre TODO el catálogo
 filtrado, cuál sería el precio NETO si aplicaras ese descuento comercial.
 
 NOTA PARA EL ASISTENTE (Ico): "Cargar", "Descargar" y "Asignación masiva"
-dependen de permisos independientes entre sí (activarCargarCatalogoProveedor,
-activarDescargarCatalogoProveedor, y el manejo de DA/DA2/DV respectivamente).
+dependen de permisos independientes entre sí (el de Cargar catálogo, el de
+Descargar catálogo, y el manejo de DA/DA2/DV respectivamente).
 Si el usuario pregunta por alguna de estas acciones y no la tiene habilitada, no
 expliques el paso a paso; solo menciona que existe esa función y dile que la
 solicite a soporte.
@@ -28,11 +28,11 @@ ACCIONES (solo si tienes el permiso correspondiente habilitado):
 
 •  "Cargar" catálogo de productos: solo si tienes activado
 
-activarCargarCatalogoProveedor.
+el permiso de Cargar catálogo.
 
 •  "Descargar" catálogo: solo si tienes activado
 
-activarDescargarCatalogoProveedor.
+el permiso de Descargar catálogo.
 
 •  "Asignación masiva": solo si manejas Descuento Adicional (DA),
 

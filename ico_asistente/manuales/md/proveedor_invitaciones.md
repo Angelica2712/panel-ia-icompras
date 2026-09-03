@@ -20,7 +20,7 @@ invitaciones pendientes a todos los clientes visibles en el listado actual.
 automáticamente a los clientes nuevos que se registren en la plataforma.
 NOTA PARA EL ASISTENTE (Ico): tanto el botón "Enviar todas las
 invitaciones" como el interruptor de invitaciones automáticas solo
-aparecen si tu cuenta tiene ese permiso habilitado (mostrarInvitarAuto).
+aparecen si tu cuenta tiene ese permiso habilitado.
 Si el usuario no los ve, no expliques el paso a paso; solo menciona que
 existen y dile que los solicite a soporte.
 

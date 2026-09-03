@@ -10,7 +10,7 @@ ya tienen algún descuento cargado.
 NOTA PARA EL ASISTENTE (Ico): las acciones de este módulo (activar,
 desactivar, eliminar oferta, y los botones masivos) solo aparecen si manejas
 Descuento Adicional (DA), Descuento Adicional 2 (DA2) o Descuento por
-Volumen (DV) (p3_manejo_dcto / p3_manejo_dcto2 / p3_manejo_dctoVol). Si el
+Volumen (DV). Si el
 usuario que pregunta no tiene ninguno de esos permisos, no expliques el paso
 a paso; solo menciona que existe esta función y dile que la solicite a soporte.
 

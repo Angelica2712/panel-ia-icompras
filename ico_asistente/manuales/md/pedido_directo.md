@@ -2,7 +2,7 @@
 
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo en detalle,
 verifica si el usuario que está preguntando tiene la modalidad "Pedido Directo"
-activada en su cuenta (bandera userPedDirecto). Esta opción es excluyente con
+activada en su cuenta. Esta opción es excluyente con
 el catálogo comparativo normal: un mismo usuario ve UNO de los dos modos,
 nunca ambos a la vez.
 

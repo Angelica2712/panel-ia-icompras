@@ -1,8 +1,7 @@
 > **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
 
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
-usuario que pregunta tiene activados los "Pedidos automáticos" (bandera
-GenPedAuto). Si NO la tiene: no expliques el paso a paso, solo menciona que
+usuario que pregunta tiene activados los "Pedidos automáticos". Si NO la tiene: no expliques el paso a paso, solo menciona que
 existe esta funcionalidad (configurar mínimos y máximos por producto para que
 el sistema pida automáticamente) y dile que debe solicitar a soporte que se la
 activen. Si SÍ la tiene, explica el módulo con el detalle de abajo.
