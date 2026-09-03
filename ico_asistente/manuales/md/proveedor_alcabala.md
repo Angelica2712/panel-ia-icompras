@@ -3,7 +3,7 @@
 PORTAL DE PROVEEDORES > ALCABALA
 
 NOTA PARA EL ASISTENTE (Ico): este módulo solo aparece en el menú si tu
-cuenta tiene activado "Alcabala" (p3_activar_alcabala). Si el usuario que
+cuenta tiene activado "Alcabala". Si el usuario que
 pregunta no lo ve en su menú, no expliques el paso a paso; solo menciona que
 existe esta funcionalidad (procesar pedidos pendientes por Alcabala, un
 requisito legal/tributario municipal) y dile que la solicite a soporte si le hace
@@ -12,7 +12,7 @@ falta.
 Este módulo lista los pedidos que están pendientes de ser procesados por
 Alcabala (un trámite fiscal municipal). Mientras tengas pedidos pendientes, el
 menú lateral muestra una insignia roja con la cantidad, y si tienes activada la
-notificación (activar_notificacion_alcabala), suena una alarma repetida en el
+notificación de Alcabala activada, suena una alarma repetida en el
 navegador hasta que los proceses todos.
 
 BUSCADOR Y FILTROS

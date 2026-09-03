@@ -1,8 +1,7 @@
 > **Audiencia: CLIENTE (Farmacia)** — Este documento aplica únicamente a usuarios cliente/farmacia. No uses esta información para responder consultas de proveedores.
 
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
-usuario que pregunta tiene activado el "Módulo Miscelaneo" (bandera
-activarModuloMiscelaneo) y si no está en la versión Light. Si NO lo tiene: no
+usuario que pregunta tiene activado el "Módulo Miscelaneo" y si no está en la versión Light. Si NO lo tiene: no
 expliques el paso a paso, solo menciona que existe esta funcionalidad (armar
 pedidos de reposición agrupados por marca) y dile que debe solicitar a soporte
 que se la activen. Si SÍ la tiene, explica el módulo con el detalle de abajo.

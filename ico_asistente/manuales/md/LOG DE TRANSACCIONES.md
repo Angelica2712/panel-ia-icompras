@@ -36,7 +36,7 @@ MANUALMENTE, seguido del código de barras (ej. 7591616000667), el ID
 interno y la cantidad agregada.
 
 •  Ejemplo de sistema: Muestra registros en formato JSON (como se ve en el
-ID 1946499 con pedido_enviar_click). Esto le permite a soporte ver la
+ID 1946499 con la acción "Pedido enviado"). Esto le permite a soporte ver la
 dirección IP desde donde se envió el pedido y el navegador exacto ("User
 Agent"), lo cual es indispensable para detectar fraudes o errores de
 compatibilidad.

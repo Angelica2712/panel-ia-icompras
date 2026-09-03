@@ -14,7 +14,7 @@ solo menciona que existe esa funcionalidad y dile que debe solicitar a
 soporte que se la activen (o que confirme con soporte si su tipo de
 usuario permite verla). Esto aplica especialmente a "USUARIO", "GESTOR
 OFERTAS", "CÓDIGO QR" y "PEDIDO DIRECTO", que dependen de tipo de
-cuenta o de banderas específicas (userPedDirecto ya tiene su propia nota
+cuenta o de banderas específicas (el permiso de Pedido Directo ya tiene su propia nota
 detallada en el manual "pedido_directo.md").
 
 Las pestañas "BÁSICA", "PARÁMETROS", "INVENTARIO", "UBICACIÓN" y "COND.

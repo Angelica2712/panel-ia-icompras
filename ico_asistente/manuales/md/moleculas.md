@@ -2,7 +2,7 @@
 
 NOTA PARA EL ASISTENTE (Ico): antes de explicar este módulo, verifica si el
 usuario que pregunta es administrador y tiene habilitado el permiso de
-moléculas (bandera botonMolecula). Si NO cumple ambas condiciones: no
+moléculas. Si NO cumple ambas condiciones: no
 expliques el paso a paso, solo menciona que existe esta funcionalidad (agrupar
 productos por principio activo/molécula) y dile que debe solicitar a soporte que
 se la activen, aclarando que requiere que su usuario sea administrador. Si SÍ
