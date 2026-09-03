@@ -59,7 +59,7 @@ seleccionar "*" para que aplique a todos.
 
 o  Tipo de Condición: Menú desplegable para elegir la condición de
 
-preferencia (las 4 formas de trabajo del sistema).
+preferencia (las 5 formas de trabajo del sistema).
 
 o  Descripción: Campo de texto opcional para describir el alcance del
 
@@ -81,9 +81,12 @@ o  Activo: Menú interactivo (Sí/No) para controlar si la regla comercial
 
 queda inmediatamente vigente o se pausa.
 
-3. Las 4 Formas de Trabajo (Tipos de Condiciones Avanzadas)
+3. Las 5 Formas de Trabajo (Tipos de Condiciones Avanzadas)
 
-El sistema gestiona la prioridad de compra a través de estos 4 modelos lógicos:
+El sistema gestiona la prioridad de compra a través de estos 5 modelos lógicos.
+Nota: en el desplegable "Tipo de Condición" de la pantalla aparecen con estos
+nombres exactos: "Días de Crédito", "Preferencial", "Condiciones Variables",
+"Días de Tránsito" y "Recargo Fijo".
 
 A. Condición: Días de Crédito
 
@@ -100,15 +103,16 @@ referencial del 2% (o un 1% por cada día de crédito). Esto hace que ese
 proveedor se perciba virtualmente "más barato" y suba posiciones en la
 lista de prioridades de compra.
 
-B. Condición: Descuento Preferencial
+B. Condición: Preferencial (Descuento Preferencial)
 
 •  Cómo opera: Funciona como un descuento fijo.
 
 •  Lógica: Permite asignar un porcentaje fijo de preferencia exclusivo para un
 proveedor determinado, beneficiando su posicionamiento frente a otros
-competidores directos en la plataforma.
+competidores directos en la plataforma. No usa los campos Descripción/Valor
+ni "% por Día" (quedan ocultos en el formulario).
 
-C. Condición: Gestión de Condición Variable
+C. Condición: Condiciones Variables (Gestión de Condición Variable)
 
 •  Cómo opera: Funciona de manera virtual como un recargo (el producto se
 
@@ -131,4 +135,27 @@ Mientras más días de tránsito (tiempo de entrega) requiera el proveedor
 para hacer llegar la mercancía, el sistema calculará un recargo virtual
 mayor, desplazando a ese proveedor hacia abajo en el orden de
 prioridades.
+
+Nota: a diferencia de Días de Crédito, esta condición NO ofrece en pantalla
+el modo "% por día" ni el selector de modo de cálculo; el porcentaje de
+recargo se define siempre como un valor fijo (se compara contra el campo
+Valor: si los días de tránsito reales igualan o superan ese número, se
+aplica el recargo).
+
+E. Condición: Recargo Fijo
+
+•  Cómo opera: Funciona de manera virtual como un recargo (el producto se
+percibe más costoso en el ordenamiento), igual que Días de Tránsito o
+Condiciones Variables.
+
+•  Lógica: Es la contraparte de "Preferencial": aplica un porcentaje de
+recargo fijo y directo a un proveedor determinado (o a todos, con "*"),
+sin necesidad de una condición o umbral adicional. No usa los campos
+Descripción/Valor ni "% por Día".
+
+•  Ejemplo práctico: Si la farmacia quiere que un proveedor en particular
+aparezca sistemáticamente más abajo en la lista de prioridades (por
+ejemplo, por mala experiencia de entrega), puede configurar un recargo
+fijo del 5% para ese proveedor sin condicionarlo a días de crédito,
+tránsito ni palabras clave.
 

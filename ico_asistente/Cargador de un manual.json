@@ -4,30 +4,76 @@
     {
       "parameters": {
         "inputSource": "jsonExample",
-        "jsonExample": "{\"ruta\": \"/home/n8n/manuales/soporte.pdf\", \"modulo\": \"soporte\", \"version\": \"light\"}"
+        "jsonExample": "{\"ruta\": \"/home/n8n/manuales/soporte.pdf\", \"modulo\": \"soporte\", \"version\": \"light\", \"audiencia\": \"cliente\"}"
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        848,
-        1456
+        704,
+        1056
       ],
       "id": "37754cc9-dc5a-4499-9a15-77f34535b0d5",
       "name": "Recibe parametros"
     },
     {
       "parameters": {
-        "fileSelector": "={{ $json.ruta }}",
+        "httpMethod": "POST",
+        "path": "87414ee6-705a-47e8-b1c6-459bdd20bef0",
         "options": {}
       },
-      "type": "n8n-nodes-base.readWriteFile",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
       "position": [
-        1056,
+        768,
+        1440
+      ],
+      "id": "c62f518e-a6ad-4168-9cb4-27624dfe75ef",
+      "name": "Webhook1",
+      "webhookId": "87414ee6-705a-47e8-b1c6-459bdd20bef0"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "body.texto",
+        "options": {
+          "encoding": "utf8",
+          "fileName": "={{ $json.body.nombre_archivo }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
         1456
       ],
-      "id": "3fdcfea0-d2d6-4834-b5ab-c5498975aaf6",
-      "name": "Leer manual local"
+      "id": "c6e1c5cd-1431-40c7-8cd4-ee110dd18373",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:6333/collections/icompras_modulos/points/payload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ payload: { modulo: ($('Recibe parametros').isExecuted ? $('Recibe parametros').item.json : $('Webhook1').item.json.body).modulo, version: ($('Recibe parametros').isExecuted ? $('Recibe parametros').item.json : $('Webhook1').item.json.body).version, audiencia: ($('Recibe parametros').isExecuted ? $('Recibe parametros').item.json : $('Webhook1').item.json.body).audiencia }, filter: { must: [ { is_empty: { key: 'modulo' } } ] } }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1920,
+        1232
+      ],
+      "id": "ed32f910-781b-442e-b972-23a41b492f25",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wuovyQLgAyMPoz32",
+          "name": "Qdrant Header Auth"
+        }
+      }
     },
     {
       "parameters": {
@@ -35,12 +81,13 @@
           "options": {
             "caseSensitive": false,
             "leftValue": "",
-            "typeValidation": "strict"
+            "typeValidation": "strict",
+            "version": 1
           },
           "conditions": [
             {
               "id": "es-markdown",
-              "leftValue": "={{ $json.ruta }}",
+              "leftValue": "={{ $('Recibe parametros').item.json.ruta }}",
               "rightValue": ".md",
               "operator": {
                 "type": "string",
@@ -55,10 +102,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1216,
-        1456
+        1200,
+        1200
       ],
-      "id": "8a1e0d3b-6b0a-4a1a-9a2e-1a6d0e2f7c11",
+      "id": "5a8d1bcf-d3d5-45f6-97f0-1364642c189e",
       "name": "Es Markdown?"
     },
     {
@@ -74,10 +121,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
       "typeVersion": 1.3,
       "position": [
-        1472,
-        1328
+        1424,
+        1360
       ],
-      "id": "f08dfe44-fc9a-42d2-b5fe-c193d36e6789",
+      "id": "0726f56c-2713-4e75-8d93-550ccfcb8f82",
       "name": "Qdrant Vector Store PDF",
       "credentials": {
         "qdrantApi": {
@@ -99,35 +146,15 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
       "typeVersion": 1.3,
       "position": [
-        1472,
-        1584
+        1424,
+        1168
       ],
-      "id": "b3f2c1d4-7e5a-4b6c-9d8e-2f1a3b4c5d6e",
+      "id": "6e451a4b-9e56-4bb3-b734-70cbd4919ee5",
       "name": "Qdrant Vector Store Markdown",
       "credentials": {
         "qdrantApi": {
           "id": "Mew94CM3qNVkEQhM",
           "name": "Qdrant account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
-      "typeVersion": 1,
-      "position": [
-        1376,
-        1856
-      ],
-      "id": "6ee7f546-7f6e-4061-8e10-9fb349422fbc",
-      "name": "Embeddings HuggingFace Inference",
-      "credentials": {
-        "huggingFaceApi": {
-          "id": "ZaAezre8merZWbp8",
-          "name": "Hugging Face account"
         }
       }
     },
@@ -141,11 +168,15 @@
             "metadataValues": [
               {
                 "name": "modulo",
-                "value": "={{ $json.modulo }}"
+                "value": "={{ $('Recibe parametros').item.json.modulo }}"
               },
               {
                 "name": "version",
-                "value": "={{ $json.version }}"
+                "value": "={{ $('Recibe parametros').item.json.version }}"
+              },
+              {
+                "name": "audiencia",
+                "value": "={{ $('Recibe parametros').item.json.audiencia }}"
               }
             ]
           }
@@ -154,10 +185,10 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        1600,
-        1200
+        1376,
+        1568
       ],
-      "id": "3968d8a3-806d-4881-89a0-2154a9c43a3e",
+      "id": "3caf2435-6a31-498c-8d43-2ba721d320b3",
       "name": "Default Data Loader PDF"
     },
     {
@@ -170,11 +201,15 @@
             "metadataValues": [
               {
                 "name": "modulo",
-                "value": "={{ $json.modulo }}"
+                "value": "={{ $('Recibe parametros').isExecuted ? $('Recibe parametros').item.json.modulo : $('Webhook1').item.json.body.modulo }}"
               },
               {
                 "name": "version",
-                "value": "={{ $json.version }}"
+                "value": "={{ $('Recibe parametros').isExecuted ? $('Recibe parametros').item.json.version : $('Webhook1').item.json.body.version }}"
+              },
+              {
+                "name": "audiencia",
+                "value": "={{ $('Recibe parametros').isExecuted ? $('Recibe parametros').item.json.audiencia : $('Webhook1').item.json.body.audiencia }}"
               }
             ]
           }
@@ -183,11 +218,45 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        1600,
-        1712
+        1856,
+        1504
       ],
-      "id": "c4d5e6f7-8a9b-4c1d-9e2f-3a4b5c6d7e8f",
+      "id": "886db40b-a42e-4008-aa6b-bf4c07688615",
       "name": "Default Data Loader Markdown"
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.ruta }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        960,
+        1216
+      ],
+      "id": "3e64b3e4-1cc0-40a5-bcfd-62bbe5497a4b",
+      "name": "Leer manual local1"
+    },
+    {
+      "parameters": {
+        "modelName": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        992
+      ],
+      "id": "8a68fd91-5eb0-4724-a808-37d7d4ab1ffb",
+      "name": "Embeddings HuggingFace Inference1",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "ZaAezre8merZWbp8",
+          "name": "Hugging Face account"
+        }
+      }
     },
     {
       "parameters": {
@@ -199,36 +268,10 @@
       "typeVersion": 1,
       "position": [
         1712,
-        1984
+        1696
       ],
-      "id": "0f81dcbe-9c48-4661-8783-0d6b911b1a0e",
-      "name": "Recursive Character Text Splitter"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://127.0.0.1:6333/collections/icompras_modulos/points/payload",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ payload: { modulo: $('Recibe parametros').item.json.modulo, version: $('Recibe parametros').item.json.version }, filter: { must: [ { is_empty: { key: 'modulo' } } ] } }) }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        1728,
-        1456
-      ],
-      "id": "36b26917-13a5-42ed-8c1b-a68ce227434c",
-      "name": "HTTP Request",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "wuovyQLgAyMPoz32",
-          "name": "Qdrant Header Auth"
-        }
-      }
+      "id": "9de41faa-2559-4fb6-817d-ccdeaccbdb93",
+      "name": "Recursive Character Text Splitter1"
     }
   ],
   "pinData": {},
@@ -237,18 +280,29 @@
       "main": [
         [
           {
-            "node": "Leer manual local",
+            "node": "Leer manual local1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Leer manual local": {
+    "Webhook1": {
       "main": [
         [
           {
-            "node": "Es Markdown?",
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store Markdown",
             "type": "main",
             "index": 0
           }
@@ -273,17 +327,23 @@
         ]
       ]
     },
-    "Embeddings HuggingFace Inference": {
-      "ai_embedding": [
+    "Qdrant Vector Store PDF": {
+      "main": [
         [
           {
-            "node": "Qdrant Vector Store PDF",
-            "type": "ai_embedding",
+            "node": "HTTP Request1",
+            "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store Markdown": {
+      "main": [
+        [
           {
-            "node": "Qdrant Vector Store Markdown",
-            "type": "ai_embedding",
+            "node": "HTTP Request1",
+            "type": "main",
             "index": 0
           }
         ]
@@ -311,7 +371,34 @@
         ]
       ]
     },
-    "Recursive Character Text Splitter": {
+    "Leer manual local1": {
+      "main": [
+        [
+          {
+            "node": "Es Markdown?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store PDF",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Qdrant Vector Store Markdown",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
       "ai_textSplitter": [
         [
           {
@@ -326,37 +413,15 @@
           }
         ]
       ]
-    },
-    "Qdrant Vector Store PDF": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Qdrant Vector Store Markdown": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "f727d03a-ebbb-4a39-87e6-3ec09ca8fa8f",
+  "versionId": "b77544f0-a145-48dc-bbf8-d2084ac849a2",
   "meta": {
     "instanceId": "68201f9e2ee853e4ad5c82fc72c91de6596694968ea2dbc96e463dcc10d56810"
   },
