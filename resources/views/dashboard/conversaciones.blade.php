@@ -30,8 +30,53 @@
 </div>
 
 <div class="table-card">
-    <div class="table-card-header">
+    <div class="table-card-header" style="flex-wrap:wrap;gap:12px;">
         <div class="table-title"><i class="bi bi-list-ul"></i> Registro de Conversaciones</div>
+
+        {{-- Filtro de fechas + botón descarga --}}
+        <form method="GET" action="{{ route('conversaciones') }}"
+              id="formFiltro" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+
+            <input type="date" name="fecha_desde"
+                   value="{{ request('fecha_desde') }}"
+                   title="Desde"
+                   style="background:rgba(11,30,61,.6);border:1px solid var(--border);border-radius:8px;
+                          color:var(--text-primary);font-family:inherit;font-size:12px;padding:7px 10px;outline:none;">
+
+            <span style="color:var(--text-muted);font-size:12px;">—</span>
+
+            <input type="date" name="fecha_hasta"
+                   value="{{ request('fecha_hasta') }}"
+                   title="Hasta"
+                   style="background:rgba(11,30,61,.6);border:1px solid var(--border);border-radius:8px;
+                          color:var(--text-primary);font-family:inherit;font-size:12px;padding:7px 10px;outline:none;">
+
+            <button type="submit" class="btn-filter btn-filter-primary" style="padding:7px 14px;font-size:12px;">
+                <i class="bi bi-funnel"></i> Filtrar
+            </button>
+
+            @if(request('fecha_desde') || request('fecha_hasta'))
+                <a href="{{ route('conversaciones') }}" class="btn-filter" style="padding:7px 14px;font-size:12px;">
+                    <i class="bi bi-x-lg"></i> Limpiar
+                </a>
+            @endif
+        </form>
+
+        {{-- Botón descargar CSV: pasa los mismos filtros activos --}}
+        <a href="{{ route('conversaciones.descargar', array_filter(['fecha_desde' => request('fecha_desde'), 'fecha_hasta' => request('fecha_hasta')])) }}"
+           class="btn-filter btn-filter-primary"
+           style="padding:7px 14px;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+                  background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.3);color:#6ee7b7;"
+           title="{{ request('fecha_desde') ? 'Descarga el período filtrado' : 'Descarga todo el historial' }}">
+            <i class="bi bi-file-earmark-spreadsheet"></i>
+            Descargar CSV
+            @if(request('fecha_desde'))
+                <span style="font-size:10px;opacity:.8;">(filtrado)</span>
+            @else
+                <span style="font-size:10px;opacity:.8;">(todo)</span>
+            @endif
+        </a>
+
         <span class="chart-badge">{{ number_format($total) }} registros</span>
     </div>
     <div class="table-wrap">

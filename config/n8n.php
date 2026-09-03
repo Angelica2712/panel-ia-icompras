@@ -31,4 +31,11 @@ return [
         'timeout' => (int) env('N8N_MANUALES_TIMEOUT', 120),
     ],
 
+    // Versiones disponibles al subir manuales.
+    // Se configura con MANUALES_VERSIONES en .env (valores separados por coma).
+    // Desde el panel se puede editar sin tocar este archivo.
+    'versiones' => array_values(array_filter(
+        array_map('trim', explode(',', env('MANUALES_VERSIONES', 'light,full,ambas')))
+    )),
+
 ];

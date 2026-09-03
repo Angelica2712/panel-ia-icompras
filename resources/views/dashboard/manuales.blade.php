@@ -190,6 +190,226 @@
         margin-top: 12px;
         padding-top: 10px;
     }
+
+    /* --- Sección de configuración de versiones --- */
+    .config-versiones {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .config-versiones .campo { flex: 1; min-width: 200px; }
+
+    .tags-versiones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+    }
+    .tag-version-edit {
+        align-items: center;
+        background: rgba(59, 130, 246, 0.14);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 20px;
+        color: var(--accent-light);
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 11.5px;
+        font-weight: 600;
+        gap: 5px;
+        padding: 4px 10px;
+        transition: background .15s;
+    }
+    .tag-version-edit:hover { background: rgba(239, 68, 68, 0.18); color: #fca5a5; border-color: rgba(239,68,68,.3); }
+    .tag-version-edit i { font-size: 10px; }
+
+    .btn-agregar-version {
+        align-items: center;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.28);
+        border-radius: 7px;
+        color: #6ee7b7;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        gap: 6px;
+        padding: 7px 14px;
+        transition: background .15s;
+        white-space: nowrap;
+    }
+    .btn-agregar-version:hover { background: rgba(16, 185, 129, 0.22); }
+
+    /* --- Botón ver fragmentos --- */
+    .btn-ver-fragmentos {
+        align-items: center;
+        background: none;
+        border: none;
+        color: var(--accent-light);
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        gap: 5px;
+        padding: 3px 0;
+        text-decoration: underline dotted;
+        text-underline-offset: 3px;
+        transition: color .15s;
+    }
+    .btn-ver-fragmentos:hover { color: #fff; }
+
+    /* --- Modal de fragmentos --- */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 9, 24, 0.82);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .22s;
+    }
+    .modal-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .modal-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 24px 80px rgba(0,0,0,.6);
+        display: flex;
+        flex-direction: column;
+        max-height: 85vh;
+        max-width: 780px;
+        width: 100%;
+        transform: translateY(12px);
+        transition: transform .22s;
+    }
+    .modal-overlay.visible .modal-box { transform: translateY(0); }
+
+    .modal-header {
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        padding: 14px 18px;
+    }
+    .modal-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .modal-meta {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+    .modal-cerrar {
+        background: rgba(70, 90, 130, 0.2);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 5px 10px;
+        transition: background .15s, color .15s;
+    }
+    .modal-cerrar:hover { background: rgba(239,68,68,.18); color: #fca5a5; }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .fragmento-card {
+        background: rgba(11, 30, 61, 0.55);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+    }
+    .fragmento-num {
+        color: var(--text-muted);
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+    }
+    .fragmento-texto {
+        color: var(--text-primary);
+        font-size: 12.5px;
+        line-height: 1.65;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .fragmento-meta {
+        border-top: 1px solid rgba(70, 100, 160, 0.15);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+    .fragmento-meta span {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 4px;
+        color: var(--text-muted);
+        font-size: 10.5px;
+        padding: 2px 7px;
+    }
+    .fragmento-meta span strong { color: var(--accent-light); }
+
+    .modal-footer {
+        align-items: center;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        padding: 10px 18px;
+    }
+    .modal-paginador { display: flex; gap: 8px; align-items: center; }
+    .btn-pag {
+        align-items: center;
+        background: rgba(59, 130, 246, 0.12);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        border-radius: 7px;
+        color: var(--accent-light);
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        gap: 5px;
+        padding: 6px 14px;
+        transition: background .15s;
+    }
+    .btn-pag:hover:not(:disabled) { background: rgba(59, 130, 246, 0.25); }
+    .btn-pag:disabled { opacity: 0.38; cursor: not-allowed; }
+    .modal-spinner {
+        color: var(--text-muted);
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .spin { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 @endsection
 
 @section('content')
@@ -401,6 +621,73 @@
 </div>
 
 
+{{-- ===================== Configuración de versiones ===================== --}}
+<div class="chart-card" style="margin-top:18px;margin-bottom:0;">
+    <div class="chart-card-header">
+        <div>
+            <div class="chart-title"><i class="bi bi-pencil-square"></i> Cambiar versión de un módulo</div>
+            <div class="chart-subtitle">Actualiza el campo "versión" de los fragmentos de un módulo sin necesidad de volver a subir el archivo</div>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ route('manuales.modulo-version') }}" id="formCambiarVersion">
+        @csrf
+        <div class="fila-2col" style="margin-top:4px;">
+
+            {{-- Módulo --}}
+            <div class="campo">
+                <label for="cvModulo"><i class="bi bi-grid-3x3-gap"></i> Módulo</label>
+                <input type="text"
+                       name="modulo"
+                       id="cvModulo"
+                       list="listaModulos"
+                       placeholder="Ej: catalogo"
+                       maxlength="60"
+                       autocomplete="off"
+                       value="{{ old('modulo') }}"
+                       class="{{ $errors->has('modulo') ? 'con-error' : '' }}"
+                       required>
+                @if($qdrantDisponible && count($manuales))
+                    <datalist id="listaModulos">
+                        @foreach(collect($manuales)->pluck('modulo')->unique() as $mod)
+                            <option value="{{ $mod }}">
+                        @endforeach
+                    </datalist>
+                @endif
+                @error('modulo')
+                    <span class="error-msg"><i class="bi bi-x-circle"></i> {{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Versión nueva --}}
+            <div class="campo">
+                <label for="cvVersionNueva"><i class="bi bi-layers"></i> Versión nueva</label>
+                <select name="version_nueva" id="cvVersionNueva"
+                        class="{{ $errors->has('version_nueva') ? 'con-error' : '' }}" required>
+                    <option value="">— Selecciona —</option>
+                    @foreach($versiones as $v)
+                        @if($v !== 'ambas')
+                            <option value="{{ $v }}" @selected(old('version_nueva') === $v)>{{ ucfirst($v) }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @error('version_nueva')
+                    <span class="error-msg"><i class="bi bi-x-circle"></i> {{ $message }}</span>
+                @enderror
+            </div>
+
+        </div>
+
+        <div class="form-acciones" style="margin-top:14px;">
+            <button type="submit" class="btn-filter btn-filter-primary"
+                    style="background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.35);color:#c4b5fd;">
+                <i class="bi bi-arrow-repeat"></i> Cambiar versión en Qdrant
+            </button>
+        </div>
+    </form>
+</div>
+
+
 {{-- ===================== Manuales ya cargados en Qdrant ===================== --}}
 <div class="chart-card" style="margin-top:18px;margin-bottom:0;">
     <div class="chart-card-header">
@@ -453,7 +740,16 @@
                                 @endphp
                                 <span class="tag-version {{ $claseTag }}">{{ $m['version'] }}</span>
                             </td>
-                            <td class="celda-frags">{{ number_format($m['fragmentos']) }}</td>
+                            <td class="celda-frags">
+                                <button type="button" class="btn-ver-fragmentos"
+                                        data-modulo="{{ $m['modulo'] }}"
+                                        data-version="{{ $m['version'] }}"
+                                        data-total="{{ $m['fragmentos'] }}"
+                                        title="Ver fragmentos de este manual">
+                                    <i class="bi bi-layout-text-sidebar-reverse"></i>
+                                    {{ number_format($m['fragmentos']) }}
+                                </button>
+                            </td>
                             <td style="text-align:right;">
                                 {{-- Un formulario por fila. @method('DELETE') le dice a Laravel
                                      que use el verbo DELETE, porque los navegadores solo saben
@@ -496,6 +792,43 @@
             </p>
         @endif
     @endif
+</div>
+
+{{-- ===================== Modal visor de fragmentos ===================== --}}
+<div class="modal-overlay" id="modalFragmentos" role="dialog" aria-modal="true" aria-label="Fragmentos del manual">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div>
+                <div class="modal-title">
+                    <i class="bi bi-layout-text-sidebar-reverse"></i>
+                    <span id="modalTitulo">Fragmentos</span>
+                </div>
+                <div class="modal-meta" id="modalMeta"></div>
+            </div>
+            <button class="modal-cerrar" id="btnCerrarModal" title="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-spinner" id="modalSpinner">
+                <i class="bi bi-arrow-repeat spin"></i> Cargando fragmentos…
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modal-spinner" id="modalSpinnerPag" style="display:none;">
+                <i class="bi bi-arrow-repeat spin"></i> Cargando…
+            </div>
+            <div class="modal-paginador">
+                <button class="btn-pag" id="btnPagAnterior" disabled>
+                    <i class="bi bi-chevron-left"></i> Anterior
+                </button>
+                <span id="modalPagInfo" style="font-size:11px;color:var(--text-muted);"></span>
+                <button class="btn-pag" id="btnPagSiguiente" disabled>
+                    Siguiente <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -630,6 +963,234 @@
                 evento.preventDefault();
             }
         });
+    });
+})();
+
+// ================== Configuración de versiones ==================
+// Gestión interactiva de etiquetas de versión.
+// Las etiquetas son botones; al hacer clic se eliminan.
+// El campo oculto #inputVersionesHidden se sincroniza con la lista actual.
+(function () {
+    var container = document.getElementById('tagsVersiones');
+    var hidden    = document.getElementById('inputVersionesHidden');
+    var input     = document.getElementById('nuevaVersion');
+    var btnAgregar = document.getElementById('btnAgregarVersion');
+
+    if (! container) return;
+
+    function sincronizar() {
+        var tags = container.querySelectorAll('.tag-version-edit');
+        var vals = Array.from(tags).map(function(t) { return t.dataset.version; });
+        hidden.value = vals.join(',');
+    }
+
+    // Clic en tag existente => eliminar
+    container.addEventListener('click', function (e) {
+        var tag = e.target.closest('.tag-version-edit');
+        if (tag) {
+            tag.remove();
+            sincronizar();
+        }
+    });
+
+    function agregarVersion() {
+        var val = input.value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+        if (! val) return;
+        // No duplicar
+        var existente = container.querySelector('[data-version="' + val + '"]');
+        if (existente) { input.value = ''; return; }
+
+        var tag = document.createElement('button');
+        tag.type = 'button';
+        tag.className = 'tag-version-edit';
+        tag.dataset.version = val;
+        tag.title = 'Clic para eliminar';
+        tag.innerHTML = val + ' <i class="bi bi-x-circle"></i>';
+        container.appendChild(tag);
+        sincronizar();
+        input.value = '';
+        input.focus();
+    }
+
+    btnAgregar.addEventListener('click', agregarVersion);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); agregarVersion(); }
+    });
+})();
+
+// ================== Modal visor de fragmentos ==================
+(function () {
+    var overlay    = document.getElementById('modalFragmentos');
+    var titulo     = document.getElementById('modalTitulo');
+    var metaEl     = document.getElementById('modalMeta');
+    var body       = document.getElementById('modalBody');
+    var spinner    = document.getElementById('modalSpinner');
+    var spinnerPag = document.getElementById('modalSpinnerPag');
+    var pagInfo    = document.getElementById('modalPagInfo');
+    var btnAnterior  = document.getElementById('btnPagAnterior');
+    var btnSiguiente = document.getElementById('btnPagSiguiente');
+    var btnCerrar    = document.getElementById('btnCerrarModal');
+
+    if (! overlay) return;
+
+    // Estado del modal
+    var estado = {
+        modulo:   '',
+        version:  '',
+        total:    0,
+        pagina:   1,       // página visual (1-based)
+        offsets:  [null],  // offsets[0]=null (primera pág), offsets[1]=offset devuelto por la 1ª pág, etc.
+        limite:   10,
+        cargando: false,
+    };
+
+    // Abrir modal al hacer clic en un botón de fragmentos
+    document.querySelectorAll('.btn-ver-fragmentos').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            estado.modulo  = btn.dataset.modulo;
+            estado.version = btn.dataset.version;
+            estado.total   = parseInt(btn.dataset.total, 10) || 0;
+            estado.pagina  = 1;
+            estado.offsets = [null];
+
+            titulo.textContent = btn.dataset.modulo + ' · ' + btn.dataset.version;
+            metaEl.textContent = '';
+
+            overlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+
+            cargarPagina(null);
+        });
+    });
+
+    // Cerrar modal
+    function cerrar() {
+        overlay.classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+    btnCerrar.addEventListener('click', cerrar);
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) cerrar();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrar();
+    });
+
+    function setLoading(cargando) {
+        estado.cargando = cargando;
+        spinner.style.display    = cargando && estado.pagina === 1 ? 'flex' : 'none';
+        spinnerPag.style.display = cargando && estado.pagina > 1  ? 'flex' : 'none';
+        btnAnterior.disabled  = cargando;
+        btnSiguiente.disabled = cargando;
+    }
+
+    function cargarPagina(offset) {
+        setLoading(true);
+
+        // Limpiar cuerpo (excepto primer carga que muestra el spinner)
+        if (estado.pagina > 1) {
+            // Ya hay contenido previo, lo dejamos hasta que llegue la respuesta
+        } else {
+            body.innerHTML = '<div class="modal-spinner" id="modalSpinner" style="display:flex;"><i class="bi bi-arrow-repeat spin"></i> Cargando fragmentos…</div>';
+        }
+
+        var url = '{{ route("manuales.fragmentos") }}'
+                + '?modulo=' + encodeURIComponent(estado.modulo)
+                + '&version=' + encodeURIComponent(estado.version)
+                + '&limite=' + estado.limite
+                + (offset ? '&offset=' + encodeURIComponent(offset) : '');
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            renderFragmentos(data);
+        })
+        .catch(function() {
+            body.innerHTML = '<div class="alerta alerta-error"><i class="bi bi-exclamation-triangle-fill"></i><div>Error al cargar los fragmentos. Revisa que Qdrant esté accesible.</div></div>';
+            setLoading(false);
+        });
+    }
+
+    function renderFragmentos(data) {
+        body.innerHTML = '';
+
+        var frags = data.fragmentos || [];
+
+        if (frags.length === 0) {
+            body.innerHTML = '<div class="tabla-vacia"><i class="bi bi-inbox"></i>No se encontraron fragmentos.</div>';
+            metaEl.textContent = 'Campo de texto: ' + (data.campoTexto || 'desconocido');
+            setLoading(false);
+            btnAnterior.disabled  = estado.pagina <= 1;
+            btnSiguiente.disabled = true;
+            actualizarPagInfo();
+            return;
+        }
+
+        var inicio = (estado.pagina - 1) * estado.limite + 1;
+        metaEl.textContent = 'Campo de texto detectado: "' + (data.campoTexto || 'auto') + '" · Mostrando ' + inicio + '–' + (inicio + frags.length - 1) + ' de ~' + estado.total;
+
+        frags.forEach(function(frag, i) {
+            var card = document.createElement('div');
+            card.className = 'fragmento-card';
+
+            var num = document.createElement('div');
+            num.className = 'fragmento-num';
+            num.textContent = 'Fragmento ' + (inicio + i) + ' · ID: ' + frag.id;
+            card.appendChild(num);
+
+            var texto = document.createElement('div');
+            texto.className = 'fragmento-texto';
+            texto.textContent = frag.texto;
+            card.appendChild(texto);
+
+            // Metadatos extra
+            if (frag.meta && Object.keys(frag.meta).length > 0) {
+                var metaDiv = document.createElement('div');
+                metaDiv.className = 'fragmento-meta';
+                Object.entries(frag.meta).forEach(function([k, v]) {
+                    var s = document.createElement('span');
+                    s.innerHTML = '<strong>' + k + ':</strong> ' + String(v).slice(0, 120);
+                    metaDiv.appendChild(s);
+                });
+                card.appendChild(metaDiv);
+            }
+
+            body.appendChild(card);
+        });
+
+        // Guardar el offset de la página siguiente
+        if (estado.offsets.length <= estado.pagina) {
+            estado.offsets.push(data.nextOffset);
+        }
+
+        setLoading(false);
+        btnAnterior.disabled  = estado.pagina <= 1;
+        btnSiguiente.disabled = ! data.nextOffset;
+        actualizarPagInfo();
+
+        body.scrollTop = 0;
+    }
+
+    function actualizarPagInfo() {
+        pagInfo.textContent = 'Página ' + estado.pagina;
+    }
+
+    btnAnterior.addEventListener('click', function () {
+        if (estado.pagina <= 1 || estado.cargando) return;
+        estado.pagina--;
+        cargarPagina(estado.offsets[estado.pagina - 1]);
+    });
+
+    btnSiguiente.addEventListener('click', function () {
+        if (estado.cargando) return;
+        var nextOffset = estado.offsets[estado.pagina];
+        estado.pagina++;
+        cargarPagina(nextOffset);
     });
 })();
 </script>

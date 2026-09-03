@@ -118,6 +118,99 @@ class QdrantService
     }
 
     /**
+     * Devuelve los fragmentos de un módulo+versión con paginación por offset.
+     *
+     * Auto-detecta el campo de texto buscando en una lista de nombres comunes
+     * (text, content, page_content, chunk, chunk_content). Usa el primero que
+     * encuentre con valor no vacío. Si no detecta ninguno, devuelve el payload
+     * completo serializado para que se pueda inspeccionar.
+     *
+     * @param  string      $modulo
+     * @param  string      $version
+     * @param  string|null $offset   ID del último punto de la página anterior (null = inicio)
+     * @param  int         $limite   Cuántos fragmentos por página
+     * @return array{fragmentos: array, nextOffset: string|null, campoTexto: string}
+     */
+    public function obtenerFragmentos(string $modulo, string $version, ?string $offset = null, int $limite = 10): array
+    {
+        // Campos de texto que suelen usar n8n y LangChain al guardar en Qdrant.
+        $camposTexto = ['text', 'content', 'page_content', 'chunk', 'chunk_content', 'document'];
+
+        $cuerpo = [
+            'limit'        => $limite,
+            'with_vector'  => false,
+            'with_payload' => true,
+            'filter'       => [
+                'must' => [
+                    ['key' => 'modulo',  'match' => ['value' => $modulo]],
+                    ['key' => 'version', 'match' => ['value' => $version]],
+                ],
+            ],
+        ];
+
+        if ($offset !== null) {
+            $cuerpo['offset'] = $offset;
+        }
+
+        $respuesta = $this->peticion()->post($this->url('/points/scroll'), $cuerpo);
+
+        if (! $respuesta->successful()) {
+            Log::warning('Qdrant no respondió al obtener fragmentos', [
+                'status'  => $respuesta->status(),
+                'modulo'  => $modulo,
+                'version' => $version,
+            ]);
+
+            return ['fragmentos' => [], 'nextOffset' => null, 'campoTexto' => 'text'];
+        }
+
+        $resultado  = $respuesta->json('result') ?? [];
+        $puntos     = $resultado['points'] ?? [];
+        $nextOffset = $resultado['next_page_offset'] ?? null;
+
+        // Auto-detectar el campo de texto mirando el primer fragmento.
+        $campoDetectado = null;
+        if (! empty($puntos)) {
+            $primerPayload = $puntos[0]['payload'] ?? [];
+            foreach ($camposTexto as $campo) {
+                if (! empty($primerPayload[$campo])) {
+                    $campoDetectado = $campo;
+                    break;
+                }
+            }
+        }
+
+        // Formatear los fragmentos para la vista.
+        $fragmentos = [];
+        foreach ($puntos as $punto) {
+            $payload = $punto['payload'] ?? [];
+
+            $texto = $campoDetectado
+                ? ($payload[$campoDetectado] ?? '(sin texto)')
+                : json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+            // Metadatos extra: todo lo que no sea el campo de texto ni modulo/version
+            $meta = array_filter($payload, function ($k) use ($campoDetectado, $camposTexto) {
+                return $k !== $campoDetectado
+                    && ! in_array($k, ['modulo', 'version'])
+                    && ! in_array($k, $camposTexto);
+            }, ARRAY_FILTER_USE_KEY);
+
+            $fragmentos[] = [
+                'id'    => $punto['id'],
+                'texto' => $texto,
+                'meta'  => $meta,
+            ];
+        }
+
+        return [
+            'fragmentos' => $fragmentos,
+            'nextOffset' => $nextOffset,
+            'campoTexto' => $campoDetectado ?? '(auto)',
+        ];
+    }
+
+    /**
      * Borra todos los fragmentos de un manual (un módulo en una versión).
      *
      * @param  string  $modulo   por ejemplo "catalogo"
@@ -186,6 +279,61 @@ class QdrantService
         return rtrim(config('qdrant.url'), '/')
             . '/collections/' . config('qdrant.collection')
             . $sufijo;
+    }
+
+    /**
+     * Cambia la versión de todos los fragmentos de un módulo en Qdrant.
+     *
+     * Usa el endpoint de "set payload" de Qdrant, que actualiza campos del
+     * payload sin tocar el vector ni los demás metadatos.
+     *
+     * @param  string      $modulo          módulo a actualizar, ej. "catalogo"
+     * @param  string      $versionNueva    la versión que se quiere asignar, ej. "full"
+     * @param  string|null $versionActual   si se indica, solo actualiza los fragmentos
+     *                                      que ya tengan esa versión; si es null, actualiza
+     *                                      todos los fragmentos del módulo sin importar versión
+     * @return bool  true si Qdrant confirmó el cambio
+     */
+    public function cambiarVersionModulo(string $modulo, string $versionNueva, ?string $versionActual = null): bool
+    {
+        $condiciones = [
+            ['key' => 'modulo', 'match' => ['value' => $modulo]],
+        ];
+
+        // Filtro opcional: solo actualizar los que ya tienen una versión concreta
+        if ($versionActual !== null && $versionActual !== '') {
+            $condiciones[] = ['key' => 'version', 'match' => ['value' => $versionActual]];
+        }
+
+        // El endpoint "set payload" de Qdrant actualiza SOLO los campos indicados,
+        // sin borrar ni tocar el resto del payload ni el vector.
+        $cuerpo = [
+            'payload' => ['version' => $versionNueva],
+            'filter'  => ['must' => $condiciones],
+        ];
+
+        // wait=true hace que Qdrant responda cuando el cambio ya está aplicado.
+        $respuesta = $this->peticion()->post($this->url('/points/payload?wait=true'), $cuerpo);
+
+        if (! $respuesta->successful()) {
+            Log::warning('Qdrant rechazó el cambio de versión del módulo', [
+                'status'         => $respuesta->status(),
+                'body'           => $respuesta->body(),
+                'modulo'         => $modulo,
+                'version_nueva'  => $versionNueva,
+                'version_actual' => $versionActual,
+            ]);
+
+            return false;
+        }
+
+        Log::info('Versión de módulo actualizada en Qdrant', [
+            'modulo'         => $modulo,
+            'version_nueva'  => $versionNueva,
+            'version_actual' => $versionActual,
+        ]);
+
+        return true;
     }
 
     /**

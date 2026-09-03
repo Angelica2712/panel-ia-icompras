@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\QdrantService;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\UploadedFile;
@@ -33,13 +34,6 @@ use Illuminate\View\View;
 class ManualesController extends Controller
 {
     /**
-     * Versiones válidas del asistente a las que puede aplicar un manual.
-     * Está aquí (y no escrito a mano en la vista) para que el desplegable
-     * y la validación usen SIEMPRE la misma lista y no se desincronicen.
-     */
-    private const VERSIONES = ['light', 'full', 'ambas'];
-
-    /**
      * Tamaño máximo por archivo, en kilobytes (1536 KB = 1.5 MB).
      *
      * Ojo: PHP tiene su propio límite en php.ini (upload_max_filesize, hoy 2M).
@@ -62,6 +56,20 @@ class ManualesController extends Controller
     private const MAX_ARCHIVOS = 20;
 
     /**
+     * Versiones válidas del asistente. Se leen desde config('n8n.versiones'),
+     * que a su vez lee MANUALES_VERSIONES del .env. Si el .env no la define,
+     * usa ['light', 'full', 'ambas'] como valores por defecto.
+     *
+     * ¿Por qué un método y no una constante? Porque las constantes de PHP
+     * no pueden contener llamadas a funciones (como config()), y queremos
+     * que la lista sea configurable desde el panel sin tocar el código.
+     */
+    private function versiones(): array
+    {
+        return config('n8n.versiones', ['light', 'full', 'ambas']);
+    }
+
+    /**
      * GET /manuales
      * Muestra el formulario de carga y, debajo, el listado de lo que ya está
      * cargado en Qdrant.
@@ -78,7 +86,7 @@ class ManualesController extends Controller
         $qdrantDisponible = $qdrant->disponible();
 
         return view('dashboard.manuales', [
-            'versiones'        => self::VERSIONES,
+            'versiones'        => $this->versiones(),
             'maxKb'            => self::MAX_KB,
             'maxArchivos'      => self::MAX_ARCHIVOS,
             'manuales'         => $qdrantDisponible ? $qdrant->listarManuales() : [],
@@ -118,7 +126,7 @@ class ManualesController extends Controller
             ],
 
             // in:... obliga a que el valor sea exactamente uno de los de la lista.
-            'version' => ['required', 'string', 'in:' . implode(',', self::VERSIONES)],
+            'version' => ['required', 'string', 'in:' . implode(',', $this->versiones())],
 
             // Opcional aquí porque en carga masiva se deriva del nombre.
             // Más abajo se exige cuando hay un solo archivo.
@@ -267,6 +275,142 @@ class ManualesController extends Controller
         return redirect()
             ->route('manuales.create')
             ->with('ok', 'Manual "' . $datos['modulo'] . '" (' . $datos['version'] . ') eliminado de la base de conocimiento.');
+    }
+
+    /**
+     * GET /manuales/fragmentos?modulo=X&version=Y&offset=Z
+     * Endpoint AJAX: devuelve fragmentos de un módulo+versión paginados.
+     * El campo de texto se auto-detecta en QdrantService.
+     */
+    public function fragmentos(Request $request, QdrantService $qdrant): JsonResponse
+    {
+        $datos = $request->validate([
+            'modulo'  => ['required', 'string', 'max:60'],
+            'version' => ['required', 'string', 'max:30'],
+            'offset'  => ['nullable', 'string', 'max:100'],
+            'limite'  => ['nullable', 'integer', 'min:1', 'max:50'],
+        ]);
+
+        if (! $qdrant->disponible()) {
+            return response()->json(['error' => 'Qdrant no está disponible.'], 503);
+        }
+
+        $resultado = $qdrant->obtenerFragmentos(
+            $datos['modulo'],
+            $datos['version'],
+            $datos['offset'] ?? null,
+            (int) ($datos['limite'] ?? 10)
+        );
+
+        return response()->json($resultado);
+    }
+
+    /**
+     * POST /manuales/versiones
+     * Guarda la lista de versiones en el .env para que persista entre reinicios.
+     *
+     * Escribe directamente el archivo .env usando str_replace para no perder
+     * las otras variables. Es la forma estándar en proyectos Laravel pequeños
+     * sin un sistema de gestión de configuración más sofisticado.
+     */
+    public function guardarVersiones(Request $request): RedirectResponse
+    {
+        $datos = $request->validate([
+            'versiones' => ['required', 'string', 'max:200',
+                'regex:/^[a-zA-Z][a-zA-Z0-9_]*(,[a-zA-Z][a-zA-Z0-9_]*)*$/'],
+        ], [
+            'versiones.required' => 'Debes indicar al menos una versión.',
+            'versiones.regex'    => 'Las versiones solo pueden contener letras, números y guiones bajos, separadas por coma.',
+        ]);
+
+        // Limpiar y normalizar: quitar espacios, duplicados, vacíos.
+        $lista = array_values(array_unique(array_filter(
+            array_map('trim', explode(',', $datos['versiones']))
+        )));
+
+        if (empty($lista)) {
+            return back()->withErrors(['versiones' => 'La lista de versiones no puede estar vacía.']);
+        }
+
+        $valorNuevo  = implode(',', $lista);
+        $envPath     = base_path('.env');
+        $contenido   = file_get_contents($envPath);
+
+        // Si la variable ya existe, la reemplazamos. Si no, la agregamos al final.
+        if (preg_match('/^MANUALES_VERSIONES=.*/m', $contenido)) {
+            $contenido = preg_replace(
+                '/^MANUALES_VERSIONES=.*/m',
+                'MANUALES_VERSIONES=' . $valorNuevo,
+                $contenido
+            );
+        } else {
+            $contenido .= PHP_EOL . 'MANUALES_VERSIONES=' . $valorNuevo . PHP_EOL;
+        }
+
+        file_put_contents($envPath, $contenido);
+
+        // Limpiar la caché de configuración para que los cambios tengan efecto
+        // en la misma petición siguiente sin necesidad de reiniciar el servidor.
+        \Artisan::call('config:clear');
+
+        Log::info('Versiones de manuales actualizadas desde el panel', [
+            'versiones' => $lista,
+            'usuario'   => optional($request->user())->email,
+        ]);
+
+        return redirect()
+            ->route('manuales.create')
+            ->with('ok', 'Versiones actualizadas: ' . implode(', ', $lista) . '.');
+    }
+
+    /**
+     * POST /manuales/modulo-version
+     * Cambia la versión de todos los fragmentos de un módulo en Qdrant.
+     * Útil para corregir versiones sin tener que volver a subir el manual.
+     */
+    public function cambiarVersionModulo(Request $request, QdrantService $qdrant): RedirectResponse
+    {
+        $datos = $request->validate([
+            'modulo'          => ['required', 'string', 'min:2', 'max:60'],
+            'version_nueva'   => ['required', 'string', 'in:' . implode(',', $this->versiones())],
+            'version_actual'  => ['nullable', 'string', 'max:30'],
+        ], [
+            'modulo.required'        => 'Debes indicar el módulo.',
+            'version_nueva.required' => 'Debes seleccionar la versión nueva.',
+            'version_nueva.in'       => 'La versión seleccionada no es válida.',
+        ]);
+
+        if (! $qdrant->disponible()) {
+            return back()->with('error', 'No se pudo conectar con Qdrant. Verifica que el servicio esté corriendo.');
+        }
+
+        $ok = $qdrant->cambiarVersionModulo(
+            $datos['modulo'],
+            $datos['version_nueva'],
+            ($datos['version_actual'] ?? null) ?: null
+        );
+
+        if (! $ok) {
+            return back()->with('error',
+                'No se pudo actualizar la versión del módulo "' . $datos['modulo'] . '". '
+                . 'Revisa que Qdrant esté accesible y que el módulo exista.'
+            );
+        }
+
+        $detalle = ($datos['version_actual'] ?? null)
+            ? ' (solo los que tenían versión "' . $datos['version_actual'] . '")'
+            : ' (todos los fragmentos del módulo)';
+
+        Log::info('Versión de módulo cambiada desde el panel', [
+            'modulo'         => $datos['modulo'],
+            'version_nueva'  => $datos['version_nueva'],
+            'version_actual' => $datos['version_actual'] ?? null,
+            'usuario'        => optional($request->user())->email,
+        ]);
+
+        return redirect()
+            ->route('manuales.create')
+            ->with('ok', 'Módulo "' . $datos['modulo'] . '" actualizado a versión "' . $datos['version_nueva'] . '"' . $detalle . '.');
     }
 
     /**
